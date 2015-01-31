@@ -7,6 +7,8 @@ _min(num a, num b) => a <= b ? a : b;
 _max(num a, num b) => a >= b ? a : b;
 _hexin(String comp) => comp.length == 1 ? comp + comp : comp;
 _hexout(String comp) => comp.length == 1 ? "0$comp" : comp;
+_tohex(num comp) => _hexout(comp.toInt().toRadixString(16));
+_fromhex(String comp) => int.parse(_hexin(comp), radix: 16);
 
 const String _RGB = "rgb";
 const String _RGBA = "rgba";
@@ -50,22 +52,22 @@ const String _HEX = "hex";
 ///
 class Color {
 
-  /// return black [Color] object
+  /// Return black [Color] object
   static Color black() => new Color();
 
-  /// return red [Color] object
+  /// Return red [Color] object
   static Color red() => new Color(255, 0, 0, 1);
 
-  /// return green [Color] object
+  /// Return green [Color] object
   static Color green() => new Color(0, 255, 0, 1);
 
-  /// return blue [Color] object
+  /// Return blue [Color] object
   static Color blue() => new Color(0, 0, 255, 1);
 
-  /// return white [Color] object
+  /// Return white [Color] object
   static Color white() => new Color(255, 255, 255, 1);
 
-  /// return gray [Color] object
+  /// Return gray [Color] object
   static Color gray() => new Color(127.5, 127.5, 127.5, 1);
 
   static final String RGB = _RGB;
@@ -77,16 +79,16 @@ class Color {
   static final String BLUE = "b";
   static final String ALPHA = "a";
 
-  /// default red component
+  /// Default red component
   static num DEF_RED = 0;
 
-  /// default green component
+  /// Default green component
   static num DEF_GREEN = 0;
 
-  /// default blue component
+  /// Default blue component
   static num DEF_BLUE = 0;
 
-  /// default alpha component
+  /// Default alpha component
   static num DEF_ALPHA = 1;
 
   /// Agreement on the map color format
@@ -97,38 +99,39 @@ class Color {
 
   /// Output color format by default
   ///
-  ///     Color.outputFormat = Color.HEX
-  ///     print(new Color()) // #000000
+  ///     Color.outputFormat = Color.HEX;
+  ///     print(new Color()); // #000000
+  ///     print(Color.red().r); // FF
   ///
   ///     Color.outputFormat = Color.RGB
   ///     print(new Color()) // rgb(0, 0, 0)
   ///
   static String outputFormat = RGBA;
 
-  /// return red component
-  /// output format specified in [outputFormat]
-  dynamic get r => outputFormat == HEX ? _asHex()[0] : components[0].toInt();
+  /// Return red component.
+  /// Output format specified in [outputFormat]
+  dynamic get r => outputFormat == HEX ? _tohex(components[0]) : components[0].toInt();
   void set r(num value) { components[0] = value.toDouble(); }
 
-  /// Return red component
-  /// output format specified in [outputFormat]
-  dynamic get g => outputFormat == HEX ? _asHex()[1] : components[1].toInt();
+  /// Return red component.
+  /// Output format specified in [outputFormat]
+  dynamic get g => outputFormat == HEX ? _tohex(components[1]) : components[1].toInt();
   void set g(num value) { components[1] = value.toDouble(); }
 
-  /// Return red component
-  /// output format specified in [outputFormat]
-  dynamic get b => outputFormat == HEX ? _asHex()[2] : components[2].toInt();
+  /// Return red component.
+  /// Output format specified in [outputFormat]
+  dynamic get b => outputFormat == HEX ? _tohex(components[2]) : components[2].toInt();
   void set b(num value) { components[2] = value.toDouble(); }
 
   /// Return opacity level
   double get a => components[3];
   void set a(num value) { components[3] = value.toDouble(); }
 
-  /// color components in [r,g,b,a] format
+  /// Color components in [r,g,b,a] format
   List<double> components = new List<double>(4);
 
-  /// Constructor create [Color] from rgba components
-  /// instead not transmitted component will be used by default components
+  /// Constructor create [Color] from rgba components.
+  /// Instead not transmitted component will be used by default components
   Color([num red, num green, num blue, num alpha]) {
     _fromArgs(
         red is num ? red : DEF_RED,
@@ -137,35 +140,34 @@ class Color {
         alpha is num ? alpha : DEF_ALPHA);
   }
 
-  /// Create [Color] object from list of components
-  /// to change the order of the component use [listConvention]
+  /// Create [Color] object from list of components.
+  /// To change the order of the component use [listConvention]
   Color.fromList(List<num> input) {
     _fromList(input);
   }
 
-  /// Create [Color] object from map of components
-  /// you can also specify the appropriate fields and components in [mapConventions]
+  /// Create [Color] object from map of components.
+  /// You can also specify the appropriate fields and components in [mapConventions]
   Color.fromMap(Map<String, num> input) {
     _fromMap(input);
   }
 
-  /// Create [Color] object from hex color format
-  /// allow use as "ffAAff" or "faF"
+  /// Create [Color] object from hex color format.
+  /// Allow use as "ffAAff" or "faF"
   Color.fromHex(String input) {
     _fromHex(input.toLowerCase());
   }
 
 
-  /**
-   * Parsing a string containing the color
-   * Allow formats
-   * - rgb(255, 255, 255)
-   * - rgba(255, 255, 255, 0.9)
-   * - #abc
-   * - #afbfcf
-   *
-   * return Color object or null
-   */
+  /// Parsing a string containing the color.
+  /// Allow formats:
+  ///
+  /// - rgb(255, 255, 255)
+  /// - rgba(255, 255, 255, 0.9)
+  /// - #abc
+  /// - #afbfcf
+  ///
+  /// return Color object or null
   static Color parse(String source) {
     if (source.contains(")") &&
         (source.startsWith("rgba(") || source.startsWith("rgb("))) {
@@ -242,24 +244,18 @@ class Color {
       hexB = hex.substring(4, 6);
     }
 
-    _fromArgs(
-      int.parse(_hexin(hexR), radix: 16),
-      int.parse(_hexin(hexG), radix: 16),
-      int.parse(_hexin(hexB), radix: 16),
-     1);
+    _fromArgs(_fromhex(hexR), _fromhex(hexG), _fromhex(hexB), 1);
   }
 
   _asHex() {
-    return [_hexout(r.toRadixString(16)),
-            _hexout(g.toRadixString(16)),
-            _hexout(b.toRadixString(16))];
+    return [_tohex(r), _tohex(g), _tohex(b)];
   }
 
-  bool operator ==(Color color) {
-    return components[0] == color.components[0] &&
-        components[1] == color.components[1] &&
-        components[2] == color.components[2] &&
-        components[3] == color.components[3];
+  bool operator ==(Color other) {
+    return components[0] == other.components[0] &&
+        components[1] == other.components[1] &&
+        components[2] == other.components[2] &&
+        components[3] == other.components[3];
   }
 
   Color operator +(Color color) {
@@ -292,13 +288,13 @@ class Color {
     return toRGBAString();
   }
 
-  /// Output color in rgba
+  /// Output color in rgba format
   String toRGBAString() => "rgba($r, $g, $b, $a)";
 
-  /// Output color in rgb
+  /// Output color in rgb format
   String toRGBString() => "rgb($r, $g, $b)";
 
-  /// Ouput color in hex
+  /// Ouput color in hex format
   String toHEXString() => "#${_asHex().join()}";
 
 }

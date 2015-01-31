@@ -3,20 +3,10 @@
 
 library fff.example;
 
-import 'package:fff/fff.dart' hide color;
+import 'package:fff/fff.dart';
 
 main() {
 
-  var input = "fcabce";
-
-  var color = new Color.fromHex(input);
-  print("hex => rgb: $color");
-
-  var rgb = Color.parse(color.toRGBString());
-  print("parse rgb: $rgb");
-
-  print("rgb => hex: ${rgb.toHEXString()}");
-
-  print(rgb.toHEXString() == "#$input");
+  print(Color.red());
 
 }
