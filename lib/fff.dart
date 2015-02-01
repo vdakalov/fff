@@ -133,11 +133,7 @@ class Color {
   /// Constructor create [Color] from rgba components.
   /// Instead not transmitted component will be used by default components
   Color([num red, num green, num blue, num alpha]) {
-    _fromArgs(
-        red is num ? red : DEF_RED,
-        green is num ? green : DEF_GREEN,
-        blue is num ? blue : DEF_BLUE,
-        alpha is num ? alpha : DEF_ALPHA);
+    _fromArgs(red, green, blue, alpha);
   }
 
   /// Create [Color] object from list of components.
@@ -173,12 +169,10 @@ class Color {
         (source.startsWith("rgba(") || source.startsWith("rgb("))) {
       var comps = source
           .substring(source.indexOf("(") + 1, source.indexOf(")")).split(",")
-          .map((c) => int.parse(c.trim()) ).toList();
-      return new Color(
-          comps[0],
-          comps[1],
-          comps[2],
-          comps.length == 4 ? comps[3] : DEF_ALPHA);
+          .map((c) =>
+              c.indexOf(".") >= 0 ? double.parse(c.trim()) : int.parse(c.trim()) )
+          .toList();
+      return new Color(comps[0], comps[1], comps[2], comps.length == 4 ? comps[3] : null);
 
     } else if (source.startsWith("#")) {
       return new Color.fromHex(source.substring(1));
@@ -188,29 +182,44 @@ class Color {
   }
 
   _fromArgs(num r, num g, num b, num a) {
-    components[0] = r.toDouble();
-    components[1] = g.toDouble();
-    components[2] = b.toDouble();
-    components[3] = a.toDouble();
+    components[0] = (r is num ? _min(_max(r, 0), 255) : DEF_RED).toDouble();
+    components[1] = (g is num ? _min(_max(g, 0), 255) : DEF_GREEN).toDouble();
+    components[2] = (b is num ? _min(_max(b, 0), 255) : DEF_BLUE).toDouble();
+    components[3] = (a is num ? _min(_max(a, 0), 1) : DEF_ALPHA).toDouble();
   }
 
   _fromMap(Map comps) {
 
-    var convs = new List<List<String>>.from(mapConventions);
+    var convs = new List<List<String>>.from(mapConventions).reversed.toList(),
+        result = new List(),
+        num = 4;
 
-    for (int i = 0; i < 4; i++) {
-      for (int j = 0; j < convs.length; j++) {
-        if (!comps.containsKey(convs[i])) convs.removeAt(i);
-        if (convs.length <= 1) break;
-      }
+    if (convs.length == 0) {
+      throw new Exception("To create an object of Color from data a map type, you need specify one or more map conventions");
     }
 
-    if (convs.length > 0) {
-      var conv = convs.first,
-          r = comps.containsKey(conv[0]) ? comps[conv[0]] : DEF_RED,
-          g = comps.containsKey(conv[1]) ? comps[conv[1]] : DEF_GREEN,
-          b = comps.containsKey(conv[2]) ? comps[conv[2]] : DEF_BLUE,
-          a = comps.containsKey(conv[3]) ? comps[conv[3]] : DEF_ALPHA;
+    for (int index = 0; index < convs.length; index++) {
+      var conv = convs[index], c = conv.length;
+
+      for (int j = 0; j < conv.length; j++) {
+        if (comps.containsKey(conv[j])) {
+          c--;
+        }
+      }
+
+      if (c >= result.length) {
+        result.length = c + 1;
+      }
+
+      result.insert(c, conv);
+    }
+
+    if (result.length > 0) {
+      var conv = result.firstWhere((c) => c is List),
+          r = conv.length > 0 ? comps[conv[0]] : null,
+          g = conv.length > 1 ? comps[conv[1]] : null,
+          b = conv.length > 2 ? comps[conv[2]] : null,
+          a = conv.length > 3 ? comps[conv[3]] : null;
 
       _fromArgs(r, g, b, a);
     }
@@ -224,10 +233,10 @@ class Color {
         bi = listConvention.indexOf(BLUE),
         ai = listConvention.indexOf(ALPHA);
 
-    var r = comps.length > ri ? comps[ri] : DEF_RED,
-        g = comps.length > gi ? comps[gi] : DEF_GREEN,
-        b = comps.length > bi ? comps[bi] : DEF_BLUE,
-        a = comps.length > ai ? comps[ai] : DEF_ALPHA;
+    var r = ri >= 0 && comps.length > ri ? comps[ri] : DEF_RED,
+        g = gi >= 0 && comps.length > gi ? comps[gi] : DEF_GREEN,
+        b = bi >= 0 && comps.length > bi ? comps[bi] : DEF_BLUE,
+        a = ai >= 0 && comps.length > ai ? comps[ai] : DEF_ALPHA;
 
     _fromArgs(r, g, b, a);
   }
@@ -248,7 +257,7 @@ class Color {
   }
 
   _asHex() {
-    return [_tohex(r), _tohex(g), _tohex(b)];
+    return [_tohex(components[0]), _tohex(components[1]), _tohex(components[2])];
   }
 
   bool operator ==(Color other) {
