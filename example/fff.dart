@@ -7,6 +7,14 @@ import 'package:fff/fff.dart';
 
 main() {
 
+  Color.mapConventions.clear();
+  Color.mapConventions.add(["a", "b", "c"]);
+  Color.mapConventions.add(["x", "y", "z"]);
+
+  print(new Color.fromMap({"a": 10, "b": 20, "c": 30}));
+  print(new Color.fromMap({"x": 10, "y": 20, "z": 30}));
+  print(new Color.fromMap({"a": 10, "b": 20, "z": 30}));
+
   // black
   print("BLACK COLORS");
   print(new Color());
