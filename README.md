@@ -21,6 +21,18 @@ A simple usage example:
     // color presets (exist: red, green, blue, gray, black and white)
     print(Color.red()); // rgba(255, 0, 0, 1.0)
     
+    print(Color.red().r); // 255
+    print(Color.red().a); // 1.0
+    
+    // int 0-255 and can not be in a hex format
+    Color.red().r = 100;
+    
+    // int or double 0-1
+    Color.red().a = .4;
+    
+    // only in rgba format
+    print(Color.red().components); // [255, 0, 0, 1.0]
+    
 Parse color
 
     // from rgb
@@ -31,6 +43,12 @@ Parse color
     
     // from hex
     print(Color.parse("#f00")); // rgba(255, 0, 0, 1.0)
+
+Arithmetics
+
+    print(Color.red() + Color.green()); // rgba(255, 255, 0, 1.0)
+    print(Color.red() - new Color(100)); // rgba(100, 0, 0, 1.0)
+    print(Color.black() == new Color()); // true
 
 Create Color object from List
 
@@ -48,10 +66,12 @@ Output format
     
     print(new Color()); // 000000
     print(Color.white()); // ffffff
+    print(Color.red().r); // ff
     
     Color.outputFormat = Color.RGB;
     
     print(Color.blue()); // rgb(0, 0, 255)
+    print(Color.blue().b); // 255
 
 List convetion
 
