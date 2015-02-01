@@ -47,7 +47,7 @@ Parse color
 Arithmetics
 
     print(Color.red() + Color.green()); // rgba(255, 255, 0, 1.0)
-    print(Color.red() - new Color(100)); // rgba(100, 0, 0, 1.0)
+    print(Color.red() - new Color(100)); // rgba(155, 0, 0, 1.0)
     print(Color.black() == new Color()); // true
 
 Create Color object from List
@@ -84,7 +84,6 @@ List convetion
     // change list convention
     Color.listConvention = [Color.BLUE, Color.RED, Color.GREEN, Color.ALPHA];
     
-    // 
     print(new Color.fromList(brg)); // rgba(10, 20, 30)
 
 Map conventions

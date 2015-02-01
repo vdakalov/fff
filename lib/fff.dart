@@ -113,12 +113,12 @@ class Color {
   dynamic get r => outputFormat == HEX ? _tohex(components[0]) : components[0].toInt();
   void set r(num value) { components[0] = value.toDouble(); }
 
-  /// Return red component.
+  /// Return green component.
   /// Output format specified in [outputFormat]
   dynamic get g => outputFormat == HEX ? _tohex(components[1]) : components[1].toInt();
   void set g(num value) { components[1] = value.toDouble(); }
 
-  /// Return red component.
+  /// Return blue component.
   /// Output format specified in [outputFormat]
   dynamic get b => outputFormat == HEX ? _tohex(components[2]) : components[2].toInt();
   void set b(num value) { components[2] = value.toDouble(); }
@@ -160,8 +160,8 @@ class Color {
   ///
   /// - rgb(255, 255, 255)
   /// - rgba(255, 255, 255, 0.9)
-  /// - #abc
-  /// - #afbfcf
+  /// - \#abc
+  /// - \#afbfcf
   ///
   /// return Color object or null
   static Color parse(String source) {
