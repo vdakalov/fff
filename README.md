@@ -67,11 +67,13 @@ Output format
     print(new Color()); // 000000
     print(Color.white()); // ffffff
     print(Color.red().r); // ff
+    print(Color.red().toHexString()); // ff0000
     
     Color.outputFormat = Color.RGB;
     
     print(Color.blue()); // rgb(0, 0, 255)
     print(Color.blue().b); // 255
+    print(Color.blue().toRgbString()); // rgb(0, 0, 255)
 
 List convetion
 

@@ -112,17 +112,17 @@ main() {
         rgba = "rgba(240, 240, 240, 1.0)",
         hex = "#f0f0f0";
 
-    expect(Color.parse(rgb).toRGBString(), rgb);
-    expect(Color.parse(rgb).toRGBAString(), rgba);
-    expect(Color.parse(rgb).toHEXString(), hex);
+    expect(Color.parse(rgb).toRgbString(), rgb);
+    expect(Color.parse(rgb).toRgbaString(), rgba);
+    expect(Color.parse(rgb).toHexString(), hex);
 
-    expect(Color.parse(rgba).toRGBString(), rgb);
-    expect(Color.parse(rgba).toRGBAString(), rgba);
-    expect(Color.parse(rgba).toHEXString(), hex);
+    expect(Color.parse(rgba).toRgbString(), rgb);
+    expect(Color.parse(rgba).toRgbaString(), rgba);
+    expect(Color.parse(rgba).toHexString(), hex);
 
-    expect(Color.parse(hex).toRGBString(), rgb);
-    expect(Color.parse(hex).toRGBAString(), rgba);
-    expect(Color.parse(hex).toHEXString(), hex);
+    expect(Color.parse(hex).toRgbString(), rgb);
+    expect(Color.parse(hex).toRgbaString(), rgba);
+    expect(Color.parse(hex).toHexString(), hex);
 
   });
 

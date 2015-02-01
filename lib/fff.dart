@@ -291,19 +291,19 @@ class Color {
   /// Output color as string in format specified [outputFormat]
   String toString() {
     switch (outputFormat) {
-      case _RGB: return toRGBString();
-      case _HEX: return toHEXString();
+      case _RGB: return toRgbString();
+      case _HEX: return toHexString();
     }
-    return toRGBAString();
+    return toRgbaString();
   }
 
   /// Output color in rgba format
-  String toRGBAString() => "rgba($r, $g, $b, $a)";
+  String toRgbaString() => "rgba($r, $g, $b, $a)";
 
   /// Output color in rgb format
-  String toRGBString() => "rgb($r, $g, $b)";
+  String toRgbString() => "rgb($r, $g, $b)";
 
   /// Ouput color in hex format
-  String toHEXString() => "#${_asHex().join()}";
+  String toHexString() => "#${_asHex().join()}";
 
 }
