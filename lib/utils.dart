@@ -15,8 +15,8 @@ hexin(String comp) => comp.length == 1 ? comp + comp : comp;
 /// Correct hex component for output
 hexout(String comp) => comp.length == 1 ? "0$comp" : comp;
 
-/// dec to hex
+/// Convert dec component to hex
 tohex(num comp) => hexout(comp.toInt().toRadixString(16));
 
-/// hex to dec
+/// Convert hex component to dec
 fromhex(String comp) => int.parse(hexin(comp), radix: 16);

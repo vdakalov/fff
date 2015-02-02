@@ -133,7 +133,7 @@ List _parseArgs(List<num> args) {
 }
 
 /// Factory for Color class
-/// Default values for rgba compoments specify in DEF\_RED, DEF\_GREEN, DEF\_BLUE and DEF\_ALPHA
+/// Default values for rgba compoments specify in [DEF_RED], [DEF_GREEN], [DEF_BLUE] and [DEF_ALPHA]
 ///
 /// allow follow color format:
 ///
@@ -142,7 +142,7 @@ List _parseArgs(List<num> args) {
 /// - \#FfF
 /// - \#FaFaFa
 ///
-/// return Color object
+/// return [Color] object
 Color ColorParser([dynamic red, num green, num blue, num alpha]) {
 
   List<num> args;

@@ -20,8 +20,8 @@ class Color {
   final double alpha;
 
   /// Constructor create [Color] from rgba components.
-  /// Default value for rgb component is 0, for alpha - null
-  /// For color with specified alpha component output format will be rgba.
+  /// Default value for [red], [green] and [blue] component is 0, for [alpha]- null
+  /// For color with specified [alpha] component output format will be rgba.
   const Color([this.red = 0, this.green = 0, this.blue = 0, this.alpha]);
 
   bool operator ==(Color other) {
@@ -55,6 +55,6 @@ class Color {
   String toRgbString() => "rgb($red, $green, $blue)";
 
   /// Ouput color in hex format
-  String toHexString() => "${tohex(red)+tohex(green)+tohex(blue)}";
+  String toHexString() => tohex(red) + tohex(green) + tohex(blue);
 
 }
