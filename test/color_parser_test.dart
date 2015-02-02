@@ -99,7 +99,7 @@ main() {
     DEF_BLUE = 50;
     DEF_ALPHA = .5;
 
-    expect(ColorParser().toString(), "rgba(50, 50, 50, 0.5)");
+    expect(() => ColorParser(), throwsA(isException));
     expect(ColorParser(100).toString(), "rgba(100, 50, 50, 0.5)");
     expect(ColorParser(null, 100).toString(), "rgba(50, 100, 50, 0.5)");
     expect(ColorParser(null, null, 100).toString(), "rgba(50, 50, 100, 0.5)");

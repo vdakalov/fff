@@ -11,10 +11,10 @@ Dart package for convenient work with color.
     main() {
     
         // create black color in rgb format
-        var black = new Color();
+        const black = const Color();
         
         // or
-        var black = new Color(0, 0, 0);
+        const black = const Color(0, 0, 0);
     
         // output it
         print(black); // rgb(0, 0, 0)
@@ -23,7 +23,7 @@ Dart package for convenient work with color.
         print(black.toRgbaString()); // rgba(0, 0, 0, 1.0)
         
         // create red color in rgba format
-        var red = new Color(255, 0, 0, 1.0);
+        const red = const Color(255, 0, 0, 1.0);
     }
     
     
@@ -44,7 +44,7 @@ In addition and subtraction of colors, the left is the main color. That is, in t
 
 ### Color presets
 
-Presets library contains 275 color from [Material design](http://www.google.com/design/spec/style/color.html)
+Presets library contains 275 constants of colors from [Material design](http://www.google.com/design/spec/style/color.html)
 
     import 'package:fff/presets.dart';
     

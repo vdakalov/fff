@@ -169,7 +169,7 @@ Color ColorParser([dynamic red, num green, num blue, num alpha]) {
   } else if (red is Map<dynamic, num>) {
     args = _parseMap(red);
 
-  } else if (red is num) {
+  } else if (red is num || green is num || blue is num || alpha is num) {
     args = [red, green, blue, alpha];
 
   }
