@@ -7,45 +7,7 @@ import 'package:fff/fff.dart';
 
 main() {
 
-  print(Color.black() == new Color());
-
-  // black
-  print("BLACK COLORS");
-  print(new Color());
-  print(Color.black());
-  print(Color.parse("#000000"));
-  print(Color.parse("rgb(0, 0, 0)"));
-  print(Color.parse("rgba(0, 0, 0, 1)"));
-
-  // red
-  print("RED COLORS");
-  print(new Color(255));
-  print(Color.red());
-  print(Color.parse("#F00"));
-  print(Color.parse("rgb(255, 0, 0)"));
-  print(Color.parse("rgba(255, 0, 0, 1)"));
-
-  // green
-  print("GREEN COLORS");
-  print(new Color(null, 255));
-  print(Color.green());
-  print(Color.parse("#0F0"));
-  print(Color.parse("rgb(0, 255, 0)"));
-  print(Color.parse("rgba(0, 255, 0, 1)"));
-
-  // blue
-  print("BLUE COLORS");
-  print(new Color(null, null, 255));
-  print(Color.blue());
-  print(Color.parse("#00F"));
-  print(Color.parse("rgb(0, 0, 255)"));
-  print(Color.parse("rgba(0, 0, 255, 1)"));
-
-  print("COMPARISON");
-  print(new Color() == Color.black());
-  print(Color.parse("rgb(0,0,0)") == Color.parse("#000000"));
-
-  print("ADD");
-  print(Color.parse("#F00") + Color.parse("#0F0"));
+  var a = new Color("#000"),
+      b = new Color(0, 0, 0);
 
 }
