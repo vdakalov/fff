@@ -1,4 +1,4 @@
-// Copyright (c) 2015, <your name>. All rights reserved. Use of this source code
+// Copyright (c) 2015, Viktor Dakalov. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 library fff.test.color_parser;
@@ -119,6 +119,13 @@ main() {
 
     expect(new Color(255, 255, 255) == ColorParser("rgba(255, 255, 255, 1.0)"), isFalse);
     expect(new Color(255, 255, 255, 1.0) == ColorParser("#FFF"), isFalse);
+
+  });
+
+  test("Restrictions", (){
+
+    expect(ColorParser(512), new Color(255));
+    expect(ColorParser(-1024), new Color(0));
 
   });
 

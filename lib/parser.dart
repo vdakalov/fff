@@ -1,7 +1,10 @@
+// Copyright (c) 2015, Viktor Dakalov. All rights reserved. Use of this source code
+// is governed by a BSD-style license that can be found in the LICENSE file.
+
 library color_parser;
 
-import 'package:fff/color.dart';
-import 'package:fff/utils.dart';
+import 'color.dart';
+import 'utils.dart';
 
 const String RGB = "rgb";
 const String RGBA = "rgba";
@@ -34,14 +37,25 @@ List<num> _parseComponents(String input, String prefix, [String postfix = ")"]) 
   if (input.startsWith(prefix) && input.contains(postfix)) {
     return new List<num>.from(
         input.substring(prefix.length, input.indexOf(postfix)).split(",")
-        .map(fromnum).toList());
+        .map((c) => num.parse(c)).toList());
   }
   return <num>[];
 }
 
-List<num> _parseRgb(String input) => _parseComponents(input, "rgb(");
+List<num> _parseRgb(String input) {
+  var comps = _parseComponents(input, "rgb(");
+  return <num>[comps.length > 0 ? comps[0] : DEF_RED,
+               comps.length > 1 ? comps[1] : DEF_GREEN,
+               comps.length > 2 ? comps[2] : DEF_BLUE];
+}
 
-List<num> _parseRgba(String input) => _parseComponents(input, "rgba(");
+List<num> _parseRgba(String input) {
+  var comps = _parseComponents(input, "rgba(");
+  return <num>[comps.length > 0 ? comps[0] : DEF_RED,
+               comps.length > 1 ? comps[1] : DEF_GREEN,
+               comps.length > 2 ? comps[2] : DEF_BLUE,
+               comps.length > 3 ? comps[3] : 1.0];
+}
 
 List<num> _parseHex(String input) {
 
@@ -85,6 +99,10 @@ List _parseMap(Map<dynamic, num> input) {
   for (int index = 0; index < convs.length; index++) {
     var conv = convs[index], c = conv.length;
 
+    if (conv.length != 4) {
+      continue ;
+    }
+
     for (int j = 0; j < conv.length; j++) {
       if (input.containsKey(conv[j])) {
         c--;
@@ -108,24 +126,35 @@ List _parseMap(Map<dynamic, num> input) {
 }
 
 List _parseArgs(List<num> args) {
-  return [args.length > 0 && args[0] is num ? args[0].toInt() : DEF_RED,
-          args.length > 1 && args[1] is num ? args[1].toInt() : DEF_GREEN,
-          args.length > 2 && args[2] is num ? args[2].toInt() : DEF_BLUE,
-          args.length > 3 && args[3] is num ? args[3].toDouble() : DEF_ALPHA];
+  return [args.length > 0 && args[0] is num ? max(min(args[0].toInt(), 255), 0) : DEF_RED,
+          args.length > 1 && args[1] is num ? max(min(args[1].toInt(), 255), 0) : DEF_GREEN,
+          args.length > 2 && args[2] is num ? max(min(args[2].toInt(), 255), 0) : DEF_BLUE,
+          args.length > 3 && args[3] is num ? max(min(args[3].toDouble(), 1.0), 0.0) : DEF_ALPHA];
 }
 
+/// Factory for Color class
+/// Default values for rgba compoments specify in DEF\_RED, DEF\_GREEN, DEF\_BLUE and DEF\_ALPHA
+///
+/// allow follow color format:
+///
+/// - rgba(255, 255, 255, 0.2)
+/// - rgb(255, 255, 255)
+/// - \#FfF
+/// - \#FaFaFa
+///
+/// return Color object
 Color ColorParser([dynamic red, num green, num blue, num alpha]) {
 
-  List<num> args = [];
+  List<num> args;
 
   if (red is String) {
     if (red.contains(")")) {
 
       if (red.startsWith("rgba(")) {
-        args = _parseComponents(red, "rgba(");
+        args = _parseRgba(red);
 
       } else if (red.startsWith("rgb(")) {
-        args = _parseComponents(red, "rgb(");
+        args = _parseRgb(red);
 
       }
 
@@ -140,9 +169,13 @@ Color ColorParser([dynamic red, num green, num blue, num alpha]) {
   } else if (red is Map<dynamic, num>) {
     args = _parseMap(red);
 
-  } else {
+  } else if (red is num) {
     args = [red, green, blue, alpha];
 
+  }
+
+  if (args == null) {
+    throw new Exception("Invalid color format. Allowed formats: #FFF, #FFFFFF, rgba(255, 255, 255, 1.0) and rgb(255, 255, 255)");
   }
 
   args = _parseArgs(args);

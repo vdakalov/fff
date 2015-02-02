@@ -1,6 +1,9 @@
+// Copyright (c) 2015, Viktor Dakalov. All rights reserved. Use of this source code
+// is governed by a BSD-style license that can be found in the LICENSE file.
+
 library color;
 
-import 'package:fff/utils.dart';
+import 'utils.dart';
 
 class Color {
 
@@ -13,11 +16,12 @@ class Color {
   /// Return blue component (0-255).
   final int blue;
 
-  /// Return opacity level (0-1)
+  /// Return opacity level (null or 0-1)
   final double alpha;
 
   /// Constructor create [Color] from rgba components.
-  /// Instead not transmitted component will be used by default components
+  /// Default value for rgb component is 0, for alpha - null
+  /// For color with specified alpha component output format will be rgba.
   const Color([this.red = 0, this.green = 0, this.blue = 0, this.alpha]);
 
   bool operator ==(Color other) {
@@ -30,7 +34,7 @@ class Color {
         min(red + other.red, 255),
         min(green + other.green, 255),
         min(blue + other.blue, 255),
-        alpha != null && other.alpha != null ? min(alpha + other.alpha, 1) : null);
+        alpha == null ? alpha : min(alpha + (other.alpha == null ? 1.0 : other.alpha), 1.0));
   }
 
   Color operator -(Color other) {
@@ -38,10 +42,10 @@ class Color {
         max(red - other.red, 0),
         max(green - other.green, 0),
         max(blue - other.blue, 0),
-        alpha != null && other.alpha != null ? max(alpha - other.alpha, 0) : null);
+        alpha == null ? alpha : max(alpha - (other.alpha == null ? 1.0 : other.alpha), 0.0));
   }
 
-  /// Output color as string in format specified [outputFormat]
+  /// Output color as string in rgba(r, g, b, a) or rgb(r, g, b) format
   String toString() => alpha == null ? toRgbString() : toRgbaString();
 
   /// Output color in rgba format

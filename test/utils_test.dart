@@ -1,4 +1,4 @@
-// Copyright (c) 2015, <your name>. All rights reserved. Use of this source code
+// Copyright (c) 2015, Viktor Dakalov. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 library fff.test.utils;
@@ -37,13 +37,6 @@ main() {
   test("fromhex", (){
     expect(fromhex("ff"), 255);
     expect(fromhex("0"), 0);
-  });
-
-  test("fromnum", (){
-    expect(fromnum("0.1"), 0.1);
-    expect(fromnum(".2"), 0.2);
-    expect(fromnum("10"), 10);
-    expect(fromnum("-59.2"), -59.2);
   });
 
 }
