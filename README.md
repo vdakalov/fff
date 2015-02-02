@@ -4,7 +4,7 @@ Dart package for convenient work with color.
 
 ## Usage
 
-A simple usage Color:
+### A simple usage Color:
 
     import 'package:fff/color.dart';
     
@@ -21,6 +21,9 @@ A simple usage Color:
         print(black.toHexString()); // 000000
         print(black.toRgbString()); // rgb(0, 0, 0)
         print(black.toRgbaString()); // rgba(0, 0, 0, 1.0)
+        
+        // create red color in rgba format
+        var red = new Color(255, 0, 0, 1.0);
     }
     
     
@@ -38,9 +41,18 @@ In addition and subtraction of colors, the left is the main color. That is, in t
     
     print(new Color(100, 0, 0, .5) + new Color(50, 0, 0, .3)); // rgba(150, 0, 0, 0.8)
     print(new Color(100, 0, 0, .5) - new Color(50, 0, 0, .3)); // rgba(50, 0, 0, 0.2)
+
+### Color presets
+
+Presets library contains 275 color from [Material design](http://www.google.com/design/spec/style/color.html)
+
+    import 'package:fff/presets.dart';
     
+    main() {
+        print(red + green); // rgb(255, 242, 134)
+    }
     
-Parse color
+### Parse color
 
     import 'package:fff/parser.dart';
 
@@ -61,7 +73,7 @@ Parse color
     
     }
 
-List convetion
+### List convention
 
     import 'package:fff/parser.dart';
 
@@ -78,9 +90,9 @@ List convetion
 
     }
     
-Map conventions
+### Map conventions
 
-import 'package:fff/parser.dart';
+    import 'package:fff/parser.dart';
 
     main() {
     
