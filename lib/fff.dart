@@ -11,6 +11,90 @@ _tohex(num comp) => _hexout(comp.toInt().toRadixString(16));
 _fromhex(String comp) => int.parse(_hexin(comp), radix: 16);
 _fromnum(String num) => num.contains(".") ? double.parse(num.trim()) : int.parse(num.trim());
 
+List<num> _parseComponents(String input, String prefix, [String postfix = ")"]) {
+  if (input.startsWith(prefix) && input.contains(postfix)) {
+    return new List<num>.from(
+        input.substring(prefix.length + 1, input.indexOf(postfix)).split(",")
+        .map(_fromnum).toList());
+  }
+  return <num>[];
+}
+
+List<num> _parseRgb(String input) => _parseComponents(input, "rgb(");
+
+List<num> _parseRgba(String input) => _parseComponents(input, "rgba(");
+
+List<num> _parseHex(String input) {
+
+  if (input.length == 3) {
+    return [input.substring(0, 1),
+            input.substring(1, 2),
+            input.substring(2, 3)];
+  }
+
+  if (input.length == 6) {
+    return [input.substring(0, 2),
+            input.substring(2, 4),
+            input.substring(4, 6)];
+  }
+
+  return [];
+}
+
+List _parseList(List<num> input) {
+  int ri = listConvention.indexOf(RED),
+      gi = listConvention.indexOf(GREEN),
+      bi = listConvention.indexOf(BLUE),
+      ai = listConvention.indexOf(ALPHA);
+
+  return [ri >= 0 && input.length > ri ? input[ri] : null,
+          gi >= 0 && input.length > gi ? input[gi] : null,
+          bi >= 0 && input.length > bi ? input[bi] : null,
+          ai >= 0 && input.length > ai ? input[ai] : null];
+}
+
+List _parseMap(Map<dynamic, num> input) {
+  var convs = new List<List<String>>.from(mapConventions).reversed.toList(),
+      conv,
+      result = new List(),
+      num = 4;
+
+  if (convs.length == 0) {
+    throw new Exception("To create an object of Color from data a map type, you need specify one or more map conventions");
+  }
+
+  for (int index = 0; index < convs.length; index++) {
+    var conv = convs[index], c = conv.length;
+
+    for (int j = 0; j < conv.length; j++) {
+      if (input.containsKey(conv[j])) {
+        c--;
+      }
+    }
+
+    if (c >= result.length) {
+      result.length = c + 1;
+    }
+
+    result.insert(c, conv);
+  }
+
+  if (result.length == 0) {
+    throw new Exception("The properties of the map does not match any of the conventions");
+  }
+
+  conv = result.firstWhere((c) => c is List);
+
+  return [input[conv[0]], input[conv[1]], input[conv[2]], input[conv[3]]];
+}
+
+List _parseArgs(List<num> args) {
+  return [args.length > 0 && args[0] is num ? args[0].toInt() : DEF_RED,
+          args.length > 1 && args[1] is num ? args[1].toInt() : DEF_GREEN,
+          args.length > 2 && args[2] is num ? args[2].toInt() : DEF_BLUE,
+          args.length > 3 && args[3] is num ? args[3].toDouble() : DEF_ALPHA];
+}
+
 const String RGB = "rgb";
 const String RGBA = "rgba";
 const String HEX = "hex";
@@ -102,102 +186,42 @@ class Color {
 
   /// Constructor create [Color] from rgba components.
   /// Instead not transmitted component will be used by default components
-  const Color._([this.red, this.green, this.blue, this.alpha]);
+  const Color._(this.red, this.green, this.blue, this.alpha);
 
   factory Color([dynamic red, num green, num blue, num alpha]) {
 
+    List<num> args = [];
+
     if (red is String) {
-      if (red.contains(")") &&
-          (red.startsWith("rgba(") || red.startsWith("rgb("))) {
-        var comps = red
-            .substring(red.indexOf("(") + 1, red.indexOf(")")).split(",")
-            .map(_fromnum).toList();
-        return new Color._(
-            comps.length > 0 ? comps[0] : DEF_RED,
-            comps.length > 1 ? comps[1] : DEF_GREEN,
-            comps.length > 2 ? comps[2] : DEF_BLUE,
-            comps.length > 3 ? comps[3] : DEF_ALPHA);
+      if (red.contains(")")) {
+
+        if (red.startsWith("rgba(")) {
+          args = _parseComponents(red, "rgba(");
+
+        } else if (red.startsWith("rgb(")) {
+          args = _parseComponents(red, "rgb(");
+
+        }
 
       } else if (red.startsWith("#")) {
+        args = _parseHex(red.substring(1));
 
-        String hexR, hexG, hexB;
-
-        if (red.length == 4) {
-          hexR = red.substring(1, 2);
-          hexG = red.substring(2, 3);
-          hexB = red.substring(3, 4);
-        }
-
-        if (red.length == 7) {
-          hexR = red.substring(1, 3);
-          hexG = red.substring(3, 5);
-          hexB = red.substring(5, 7);
-        }
-
-        return new Color._(
-            hexR is String ? _fromhex(hexR) : DEF_RED,
-            hexG is String ? _fromhex(hexG) : DEF_GREEN,
-            hexB is String ? _fromhex(hexB) : DEF_BLUE,
-            DEF_ALPHA);
       }
 
     } else if (red is List<num>) {
-      int ri = listConvention.indexOf(RED),
-          gi = listConvention.indexOf(GREEN),
-          bi = listConvention.indexOf(BLUE),
-          ai = listConvention.indexOf(ALPHA);
-
-      var r = ri >= 0 && red.length > ri ? red[ri].toInt() : DEF_RED,
-          g = gi >= 0 && red.length > gi ? red[gi].toInt() : DEF_GREEN,
-          b = bi >= 0 && red.length > bi ? red[bi].toInt() : DEF_BLUE,
-          a = ai >= 0 && red.length > ai ? red[ai].toDouble() : DEF_ALPHA;
-
-      return new Color._(r, g, b, a);
+      args = _parseList(red);
 
     } else if (red is Map<dynamic, num>) {
-      var convs = new List<List<String>>.from(mapConventions).reversed.toList(),
-          result = new List(),
-          num = 4;
+      args = _parseMap(red);
 
-      if (convs.length == 0) {
-        throw new Exception("To create an object of Color from data a map type, you need specify one or more map conventions");
-      }
-
-      for (int index = 0; index < convs.length; index++) {
-        var conv = convs[index], c = conv.length;
-
-        for (int j = 0; j < conv.length; j++) {
-          if (red.containsKey(conv[j])) {
-            c--;
-          }
-        }
-
-        if (c >= result.length) {
-          result.length = c + 1;
-        }
-
-        result.insert(c, conv);
-      }
-
-      if (result.length == 0) {
-        throw new Exception("The properties of the map does not match any of the conventions");
-      }
-
-      var conv = result.firstWhere((c) => c is List),
-          r = red.containsKey(conv[0]) ? red[conv[0]].toInt() : DEF_RED,
-          g = red.containsKey(conv[1]) ? red[conv[1]].toInt() : DEF_GREEN,
-          b = red.containsKey(conv[2]) ? red[conv[2]].toInt() : DEF_BLUE,
-          a = red.containsKey(conv[3]) ? red[conv[3]].toDouble() : DEF_ALPHA;
-
-      return new Color._(r, g, b, a);
+    } else {
+      args = [red, green, blue, alpha];
 
     }
 
-    return new Color._(
-        red is num ? red.toInt() : DEF_RED,
-        green is num ? green.toInt() : DEF_GREEN,
-        blue is num ? blue.toInt() : DEF_BLUE,
-        alpha is num ? alpha.toDouble() : DEF_ALPHA);
+    args = _parseArgs(args);
+
+    return new Color._(args[0], args[1], args[2], args[3]);
   }
 
   bool operator ==(dynamic other) {

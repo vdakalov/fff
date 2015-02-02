@@ -7,7 +7,15 @@ import 'package:fff/fff.dart';
 
 main() {
 
-  var a = new Color("#000"),
-      b = new Color(0, 0, 0);
+  output("red full", RGBA, new Color(255, 0, 0, 1.0));
+  output("red min", RGBA, new Color(255));
 
+  output("green full", RGBA, new Color(0, 255, 0, 1.0));
+  output("green min", RGBA, new Color(null, 255));
+
+}
+
+int i = 1;
+output(String color, String mode, Color obj) {
+  print("${i++}. $color: $mode[$obj]");
 }
