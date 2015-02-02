@@ -9,100 +9,89 @@ import 'package:fff/fff.dart';
 main() {
 
   test("Constructor without arguments",(){
-    expect(new Color().toString(), "rgba(0, 0, 0, 1.0)");
+    expect(new Color().toString(), "rgb(0, 0, 0)");
   });
 
   test("Constructor with arguments", (){
-    expect(new Color(255).toString(), "rgba(255, 0, 0, 1.0)");
-    expect(new Color(null, 255).toString(), "rgba(0, 255, 0, 1.0)");
-    expect(new Color(null, null, 255).toString(), "rgba(0, 0, 255, 1.0)");
+    expect(new Color(255).toString(), "rgb(255, 0, 0)");
+    expect(new Color(null, 255).toString(), "rgb(0, 255, 0)");
+    expect(new Color(null, null, 255).toString(), "rgb(0, 0, 255)");
     expect(new Color(null, null, null, .3).toString(), "rgba(0, 0, 0, 0.3)");
     expect(new Color(1, 2, 3, 0.4).toString(), "rgba(1, 2, 3, 0.4)");
   });
 
   test("Constructor from HEX", (){
-    expect(new Color.fromHex("fff").toString(), "rgba(255, 255, 255, 1.0)");
-    expect(new Color.fromHex("FFF").toString(), "rgba(255, 255, 255, 1.0)");
-    expect(new Color.fromHex("fafafa").toString(), "rgba(250, 250, 250, 1.0)");
-    expect(new Color.fromHex("FAFAFA").toString(), "rgba(250, 250, 250, 1.0)");
+    expect(new Color("#fff").toString(), "rgb(255, 255, 255)");
+    expect(new Color("#FFF").toString(), "rgb(255, 255, 255)");
+    expect(new Color("#fafafa").toString(), "rgb(250, 250, 250)");
+    expect(new Color("#FAFAFA").toString(), "rgb(250, 250, 250)");
   });
 
   test("Constructor fromList", (){
-    expect(new Color.fromList([1]).toString(), "rgba(1, 0, 0, 1.0)");
-    expect(new Color.fromList([1,2]).toString(), "rgba(1, 2, 0, 1.0)");
-    expect(new Color.fromList([1,2,3]).toString(), "rgba(1, 2, 3, 1.0)");
-    expect(new Color.fromList([1,2,3,.4]).toString(), "rgba(1, 2, 3, 0.4)");
+    expect(new Color([1]).toString(), "rgb(1, 0, 0)");
+    expect(new Color([1,2]).toString(), "rgb(1, 2, 0)");
+    expect(new Color([1,2,3]).toString(), "rgb(1, 2, 3)");
+    expect(new Color([1,2,3,.4]).toString(), "rgba(1, 2, 3, 0.4)");
 
-    expect(new Color.fromList([10, null, null, null]).toString(), "rgba(10, 0, 0, 1.0)");
-    expect(new Color.fromList([null, 10, null, null]).toString(), "rgba(0, 10, 0, 1.0)");
-    expect(new Color.fromList([null, null, 10, null]).toString(), "rgba(0, 0, 10, 1.0)");
-    expect(new Color.fromList([null, null, null, .1]).toString(), "rgba(0, 0, 0, 0.1)");
+    expect(new Color([10, null, null, null]).toString(), "rgb(10, 0, 0)");
+    expect(new Color([null, 10, null, null]).toString(), "rgb(0, 10, 0)");
+    expect(new Color([null, null, 10, null]).toString(), "rgb(0, 0, 10)");
+    expect(new Color([null, null, null, .1]).toString(), "rgba(0, 0, 0, 0.1)");
   });
 
   test("Constructor fromMap", (){
 
-    expect(new Color.fromMap({"r": 1}).toString(), "rgba(1, 0, 0, 1.0)");
-    expect(new Color.fromMap({"g": 2}).toString(), "rgba(0, 2, 0, 1.0)");
-    expect(new Color.fromMap({"b": 3}).toString(), "rgba(0, 0, 3, 1.0)");
-    expect(new Color.fromMap({"a": .4}).toString(), "rgba(0, 0, 0, 0.4)");
+    expect(new Color({"r": 1}).toString(), "rgb(1, 0, 0)");
+    expect(new Color({"g": 2}).toString(), "rgb(0, 2, 0)");
+    expect(new Color({"b": 3}).toString(), "rgb(0, 0, 3)");
+    expect(new Color({"a": .4}).toString(), "rgba(0, 0, 0, 0.4)");
 
-    expect(new Color.fromMap({"r": 1, "g": 2, "b": 3, "a": .4}).toString(), "rgba(1, 2, 3, 0.4)");
+    expect(new Color({"r": 1, "g": 2, "b": 3, "a": .4}).toString(), "rgba(1, 2, 3, 0.4)");
 
   });
 
   test("List convention", (){
-    var def = Color.listConvention;
+    var def = listConvention;
 
-    Color.listConvention = [Color.ALPHA, Color.BLUE, Color.GREEN, Color.RED];
-    expect(new Color.fromList([.1, 3, 2, 1]).toString(), "rgba(1, 2, 3, 0.1)");
+    listConvention = [ALPHA, BLUE, GREEN, RED];
+    expect(new Color([.1, 3, 2, 1]).toString(), "rgba(1, 2, 3, 0.1)");
 
-    Color.listConvention = [Color.BLUE, Color.ALPHA];
-    expect(new Color.fromList([3, .2]).toString(), "rgba(0, 0, 3, 0.2)");
+    listConvention = [BLUE, ALPHA];
+    expect(new Color([3, .2]).toString(), "rgba(0, 0, 3, 0.2)");
 
-    Color.listConvention = def;
+    listConvention = def;
   });
 
   test("Map convensions",  (){
 
-    var def = Color.mapConventions;
+    var def = mapConventions;
 
-    Color.mapConventions.clear();
-    expect(() => new Color.fromMap({"R":1, "G": 2, "B": 3, "A": .1}), throwsA(isException));
+    mapConventions.clear();
+    expect(() => new Color({"R":1, "G": 2, "B": 3, "A": .1}), throwsA(isException));
 
-    Color.mapConventions.add(["X", "Y", "Z", "T"]);
-    Color.mapConventions.add(["A", "B", "C", "D"]);
-    Color.mapConventions.add(["X", "Y", "Z", "T"]);
-    Color.mapConventions.add(["R", "G", "B", "A"]);
+    mapConventions.add(["X", "Y", "Z", "T"]);
+    mapConventions.add(["A", "B", "C", "D"]);
+    mapConventions.add(["X", "Y", "Z", "T"]);
+    mapConventions.add(["R", "G", "B", "A"]);
 
-    expect(new Color.fromMap({"X": 1, "Y": 2, "Z": 3, "T": .4}).toString(), "rgba(1, 2, 3, 0.4)");
-    expect(new Color.fromMap({"A": 2, "B": 4, "C": 6, "D": .8}).toString(), "rgba(2, 4, 6, 0.8)");
-    expect(new Color.fromMap({"X": 1, "Y": 2, "Z": 3, "T": .4}).toString(), "rgba(1, 2, 3, 0.4)");
-    expect(new Color.fromMap({"R": 1, "G": 2, "B": 3, "A": .4}).toString(), "rgba(1, 2, 3, 0.4)");
+    expect(new Color({"X": 1, "Y": 2, "Z": 3, "T": .4}).toString(), "rgba(1, 2, 3, 0.4)");
+    expect(new Color({"A": 2, "B": 4, "C": 6, "D": .8}).toString(), "rgba(2, 4, 6, 0.8)");
+    expect(new Color({"X": 1, "Y": 2, "Z": 3, "T": .4}).toString(), "rgba(1, 2, 3, 0.4)");
+    expect(new Color({"R": 1, "G": 2, "B": 3, "A": .4}).toString(), "rgba(1, 2, 3, 0.4)");
 
-    Color.mapConventions = def;
+    mapConventions = def;
 
   });
 
   test("Output format", (){
 
-    var def = Color.outputFormat;
+    expect(new Color(255).toString(), "rgb(255, 0, 0)");
+    expect(new Color(255).toRgbString(), "rgb(255, 0, 0)");
 
-    var red = Color.red();
-    Color.outputFormat = Color.RGB;
-    expect(red.toString(), "rgb(255, 0, 0)");
-    expect([red.r, red.g, red.b, red.a], equals([255, 0, 0, 1.0]));
+    expect(new Color(255, 0, 0, 1.0).toString(), "rgba(255, 0, 0, 1.0)");
+    expect(new Color(255, 0, 0, 1.0).toRgbaString(), "rgba(255, 0, 0, 1.0)");
 
-    var green = Color.green();
-    Color.outputFormat = Color.RGBA;
-    expect(green.toString(), "rgba(0, 255, 0, 1.0)");
-    expect([green.r, green.g, green.b, green.a], equals([0, 255, 0, 1.0]));
-
-    var blue = Color.blue();
-    Color.outputFormat = Color.HEX;
-    expect(blue.toString(), "#0000ff");
-    expect([blue.r, blue.g, blue.b, blue.a], equals(["00", "00", "ff", 1.0]));
-
-    Color.outputFormat = def;
+    expect(new Color(255, 0, 0).toHexString(), "#ff0000");
 
   });
 
@@ -112,17 +101,17 @@ main() {
         rgba = "rgba(240, 240, 240, 1.0)",
         hex = "#f0f0f0";
 
-    expect(Color.parse(rgb).toRgbString(), rgb);
-    expect(Color.parse(rgb).toRgbaString(), rgba);
-    expect(Color.parse(rgb).toHexString(), hex);
+    expect(new Color(rgb).toRgbString(), rgb);
+    expect(new Color(rgb).toRgbaString(), rgba);
+    expect(new Color(rgb).toHexString(), hex);
 
-    expect(Color.parse(rgba).toRgbString(), rgb);
-    expect(Color.parse(rgba).toRgbaString(), rgba);
-    expect(Color.parse(rgba).toHexString(), hex);
+    expect(new Color(rgba).toRgbString(), rgb);
+    expect(new Color(rgba).toRgbaString(), rgba);
+    expect(new Color(rgba).toHexString(), hex);
 
-    expect(Color.parse(hex).toRgbString(), rgb);
-    expect(Color.parse(hex).toRgbaString(), rgba);
-    expect(Color.parse(hex).toHexString(), hex);
+    expect(new Color(hex).toRgbString(), rgb);
+    expect(new Color(hex).toRgbaString(), rgba);
+    expect(new Color(hex).toHexString(), hex);
 
   });
 
@@ -132,10 +121,10 @@ main() {
 
   test("Default values", (){
 
-    Color.DEF_RED = 50;
-    Color.DEF_GREEN = 50;
-    Color.DEF_BLUE = 50;
-    Color.DEF_ALPHA = .5;
+    DEF_RED = 50;
+    DEF_GREEN = 50;
+    DEF_BLUE = 50;
+    DEF_ALPHA = .5;
 
     expect(new Color().toString(), "rgba(50, 50, 50, 0.5)");
     expect(new Color(100).toString(), "rgba(100, 50, 50, 0.5)");
@@ -143,17 +132,23 @@ main() {
     expect(new Color(null, null, 100).toString(), "rgba(50, 50, 100, 0.5)");
     expect(new Color(null, null, null, .6).toString(), "rgba(50, 50, 50, 0.6)");
 
-    Color.DEF_RED = 0;
-    Color.DEF_GREEN = 0;
-    Color.DEF_BLUE = 0;
-    Color.DEF_ALPHA = 1.0;
+    DEF_RED = 0;
+    DEF_GREEN = 0;
+    DEF_BLUE = 0;
+    DEF_ALPHA = null;
 
   });
 
   test("Arithmetics", (){
 
-    expect(Color.red() + Color.green(), new Color(255, 255));
-    expect(Color.red() - new Color(100), new Color(155));
+    expect(new Color(255) + new Color(0, 255), new Color(255, 255));
+    expect(new Color(255) - new Color(100), new Color(155, 0, 0));
+
+    expect(new Color(255) == "#f00", isTrue);
+    expect(new Color(255, 255, 255) == "rgb(255, 255, 255)", isTrue);
+
+    expect(new Color(255, 255, 255) == "rgba(255, 255, 255, 1.0)", isFalse);
+    expect(new Color(255, 255, 255, 1.0) == "#FFF", isFalse);
 
   });
 

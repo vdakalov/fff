@@ -14,7 +14,7 @@ _fromnum(String num) => num.contains(".") ? double.parse(num.trim()) : int.parse
 List<num> _parseComponents(String input, String prefix, [String postfix = ")"]) {
   if (input.startsWith(prefix) && input.contains(postfix)) {
     return new List<num>.from(
-        input.substring(prefix.length + 1, input.indexOf(postfix)).split(",")
+        input.substring(prefix.length, input.indexOf(postfix)).split(",")
         .map(_fromnum).toList());
   }
   return <num>[];
@@ -29,13 +29,13 @@ List<num> _parseHex(String input) {
   if (input.length == 3) {
     return [input.substring(0, 1),
             input.substring(1, 2),
-            input.substring(2, 3)];
+            input.substring(2, 3)].map(_fromhex).toList();
   }
 
   if (input.length == 6) {
     return [input.substring(0, 2),
             input.substring(2, 4),
-            input.substring(4, 6)];
+            input.substring(4, 6)].map(_fromhex).toList();
   }
 
   return [];
@@ -114,18 +114,7 @@ num DEF_GREEN = 0;
 num DEF_BLUE = 0;
 
 /// Default alpha component
-double DEF_ALPHA = 1.0;
-
-/// Output color format by default
-///
-///     FORMAT = Color.HEX;
-///     print(new Color()); // #000000
-///     print(Color.red().r); // FF
-///
-///     FORMAT = Color.RGB
-///     print(new Color()) // rgb(0, 0, 0)
-///
-String FORMAT = RGBA;
+double DEF_ALPHA = null;
 
 /// Agreement on the map color format
 List<List<String>> mapConventions = [['r','g','b','a'],['x','y','z','a']];
@@ -230,20 +219,20 @@ class Color {
         alpha == other.alpha;
   }
 
-  Color operator +(Color color) {
-    double r = _min(red + color.red, 255.0),
-           g = _min(green + color.green, 255.0),
-           b = _min(blue + color.blue, 255.0),
-           a = _min(alpha + color.alpha, 1.0);
-    return new Color(r, g, b, a);
+  Color operator +(Color other) {
+    return new Color(
+        _min(red + other.red, 255),
+        _min(green + other.green, 255),
+        _min(blue + other.blue, 255),
+        alpha != null && other.alpha != null ? _min(alpha + other.alpha, 1) : null);
   }
 
-  Color operator -(Color color) {
-    double r = _max(red - color.red, 0.0),
-           g = _max(green - color.green, 0.0),
-           b = _max(blue - color.blue, 0.0),
-           a = _max(alpha - color.alpha, 0.0);
-    return new Color(r, g, b, a);
+  Color operator -(Color other) {
+    return new Color(
+        _max(red - other.red, 0),
+        _max(green - other.green, 0),
+        _max(blue - other.blue, 0),
+        alpha != null && other.alpha != null ? _max(alpha - other.alpha, 0) : null);
   }
 
   /// Create new [Color] from it
@@ -252,16 +241,10 @@ class Color {
   }
 
   /// Output color as string in format specified [outputFormat]
-  String toString() {
-    switch (FORMAT) {
-      case RGB: return toRgbString();
-      case HEX: return toHexString();
-      default: return toRgbaString();
-    }
-  }
+  String toString() => alpha == null ? toRgbString() : toRgbaString();
 
   /// Output color in rgba format
-  String toRgbaString() => "rgba($red, $green, $blue, $alpha)";
+  String toRgbaString() => "rgba($red, $green, $blue, ${alpha == null ? 1.0 : alpha})";
 
   /// Output color in rgb format
   String toRgbString() => "rgb($red, $green, $blue)";
