@@ -33,31 +33,31 @@ List<List<String>> mapConventions = [['r','g','b','a'],['x','y','z','a']];
 /// Agreement on the list color format
 List<String> listConvention = [RED, GREEN, BLUE, ALPHA];
 
-List<num> _parseComponents(String input, String prefix, [String postfix = ")"]) {
+_parseComponents(String input, String prefix, [String postfix = ")"]) {
   if (input.startsWith(prefix) && input.contains(postfix)) {
-    return new List<num>.from(
+    return new List.from(
         input.substring(prefix.length, input.indexOf(postfix)).split(",")
         .map((c) => num.parse(c)).toList());
   }
-  return <num>[];
+  return [];
 }
 
-List<num> _parseRgb(String input) {
+_parseRgb(String input) {
   var comps = _parseComponents(input, "rgb(");
-  return <num>[comps.length > 0 ? comps[0] : DEF_RED,
-               comps.length > 1 ? comps[1] : DEF_GREEN,
-               comps.length > 2 ? comps[2] : DEF_BLUE];
+  return [comps.length > 0 ? comps[0] : DEF_RED,
+          comps.length > 1 ? comps[1] : DEF_GREEN,
+          comps.length > 2 ? comps[2] : DEF_BLUE];
 }
 
-List<num> _parseRgba(String input) {
+_parseRgba(String input) {
   var comps = _parseComponents(input, "rgba(");
-  return <num>[comps.length > 0 ? comps[0] : DEF_RED,
-               comps.length > 1 ? comps[1] : DEF_GREEN,
-               comps.length > 2 ? comps[2] : DEF_BLUE,
-               comps.length > 3 ? comps[3] : 1.0];
+  return [comps.length > 0 ? comps[0] : DEF_RED,
+          comps.length > 1 ? comps[1] : DEF_GREEN,
+          comps.length > 2 ? comps[2] : DEF_BLUE,
+          comps.length > 3 ? comps[3] : 1.0];
 }
 
-List<num> _parseHex(String input) {
+_parseHex(String input) {
 
   if (input.length == 3) {
     return [input.substring(0, 1),
@@ -74,7 +74,7 @@ List<num> _parseHex(String input) {
   return [];
 }
 
-List _parseList(List<num> input) {
+_parseList(List input) {
   int ri = listConvention.indexOf(RED),
       gi = listConvention.indexOf(GREEN),
       bi = listConvention.indexOf(BLUE),
@@ -86,8 +86,8 @@ List _parseList(List<num> input) {
           ai >= 0 && input.length > ai ? input[ai] : null];
 }
 
-List _parseMap(Map<dynamic, num> input) {
-  var convs = new List<List<String>>.from(mapConventions).reversed.toList(),
+_parseMap(Map input) {
+  var convs = new List.from(mapConventions).reversed.toList(),
       conv,
       result = new List(),
       num = 4;
@@ -96,14 +96,14 @@ List _parseMap(Map<dynamic, num> input) {
     throw new Exception("To create an object of Color from data a map type, you need specify one or more map conventions");
   }
 
-  for (int index = 0; index < convs.length; index++) {
+  for (var index = 0; index < convs.length; index++) {
     var conv = convs[index], c = conv.length;
 
     if (conv.length != 4) {
       continue ;
     }
 
-    for (int j = 0; j < conv.length; j++) {
+    for (var j = 0; j < conv.length; j++) {
       if (input.containsKey(conv[j])) {
         c--;
       }
@@ -125,7 +125,7 @@ List _parseMap(Map<dynamic, num> input) {
   return [input[conv[0]], input[conv[1]], input[conv[2]], input[conv[3]]];
 }
 
-List _parseArgs(List<num> args) {
+_parseArgs(List args) {
   return [args.length > 0 && args[0] is num ? max(min(args[0].toInt(), 255), 0) : DEF_RED,
           args.length > 1 && args[1] is num ? max(min(args[1].toInt(), 255), 0) : DEF_GREEN,
           args.length > 2 && args[2] is num ? max(min(args[2].toInt(), 255), 0) : DEF_BLUE,
@@ -145,7 +145,7 @@ List _parseArgs(List<num> args) {
 /// return [Color] object
 Color ColorParser([dynamic red, num green, num blue, num alpha]) {
 
-  List<num> args;
+  var args;
 
   if (red is String) {
     if (red.contains(")")) {
