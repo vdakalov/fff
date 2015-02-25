@@ -19,3 +19,4 @@
 ## 0.0.3
 
 - Added method toList for the Color object
+- Update docs for constants in presets library
