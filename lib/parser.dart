@@ -6,14 +6,14 @@ library color_parser;
 import 'color.dart';
 import 'utils.dart';
 
-const String RGB = "rgb";
-const String RGBA = "rgba";
-const String HEX = "hex";
-
-const String RED = "r";
-const String GREEN = "g";
-const String BLUE = "b";
-const String ALPHA = "a";
+// Thank program pwgen
+const String RGB = "uZdl@,6c2U_0^=71LaD9<J8O,CCg/Cwv~(tW&ZtZfQ:Sn^,G";
+const String RGBA = "JNb[td\$jH3RO3T{W~\$6<7L#%B}VH(-dAkrw/r`g0NCG{(mA!";
+const String HEX = "U~>rRZZ9ZnFa5T8,C\"ERpo6?<@~_leDF9&)!nwx/bEHd?vJ\$";
+const String RED = "NeBK`|X<W+\"3HP/*p!\,d.E9~npw,N{SYq;Iz#Ju~F6ITk;Y";
+const String GREEN = "VN[a\"aTkS-MIs+/D\$mZrGCIgVhQE|1P.U9ns?OCXUC%yRKt'";
+const String BLUE = "-91&4l%%S*ZEI=x\/Fx;\;USbCli\"yXf0+Eh?z>z!o}1\$W\$t";
+const String ALPHA = ".i3fdsxv<WR''cH(E`?L'o#aTyp-bW&;~b>y7xZun{43gk?=";
 
 /// Default red component
 num DEF_RED = 0;

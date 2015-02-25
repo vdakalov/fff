@@ -15,3 +15,7 @@
 
 - Remove excess annotations types
 - Fix changelog version 
+
+## 0.0.3
+
+- Added method toList for the Color object
