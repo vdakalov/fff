@@ -69,7 +69,7 @@ class Color {
   /// times, specify the argument [rows]. This may be necessary when you need to
   /// set the same color for each vertex in the polygon 3D model.
   List toList({
-    List<String> template, bool asDouble: false, int range, int rows: 1}) {
+    List template, bool asDouble: false, int range, int rows: 1}) {
 
     var values = [red, green, blue, alpha],
         defEnd = 255,
@@ -82,14 +82,14 @@ class Color {
     for (var index = 0; index < comps.length; ) {
       var pos = target.indexOf(comps[index]), isAlpha = comps[index] == ALPHA,
           value = values[index];
-      if (pos is num && pos >= 0) {
+      if (pos is int && pos >= 0) {
         if (isAlpha) {
           value = value == null ? 1.0 : value;
         }
-        if (value is num && asDouble) {
+        if (value is int && asDouble) {
           value = value.toDouble();
         }
-        if (value is num && end != defEnd && !isAlpha) {
+        if (value is int && end != defEnd && !isAlpha) {
           value = range / defEnd * value;
         }
         target[pos] = value;
@@ -106,6 +106,28 @@ class Color {
     }
 
     return target;
+  }
+
+  /// Output color as [Map] object
+  /// By default, the map will be output with the keys "red", "green" and
+  /// "blue". "alpha" will be displayed depending on the format of the object.
+  /// You can also specify an arbitrary number of components of said [template].
+  /// Default values rgb component output as int. You can change this by
+  /// passing a true argument [asDouble]. All rgb components of the default set
+  /// in the range of 0-255, but you can change this by specifying a [range]
+  /// argument needs range from 0-range (eg from 0 to 1).
+  Map toMap({Map template, bool asDouble: false, int range}) {
+
+    var defKeys = ["red", "green", "blue", "alpha"],
+        comps = template == null && alpha == null ? [RED, GREEN, BLUE] :
+          [RED, GREEN, BLUE, ALPHA],
+        target = template is Map ? template :
+          new Map.fromIterables(defKeys.sublist(0, comps.length), comps);
+
+    return new Map.fromIterables(target.keys,
+        toList(template: target.values.toList(),
+               asDouble: asDouble,
+               range: range));
   }
 
 }

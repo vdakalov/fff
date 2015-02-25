@@ -31,7 +31,8 @@ main() {
 
     expect(new Color(255, 0, 0).toHexString(), "ff0000");
 
-    // toList
+
+    // === toList ===
 
     // simple
     expect(new Color(0, 0, 0).toList(), equals([0, 0, 0]));
@@ -60,6 +61,7 @@ main() {
           template: [BLUE, BLUE, BLUE]),
         equals([30, 30, 30]));
 
+    // range
     expect(new Color(50, 255, 100, 0.4).toList(
         asDouble: false,
         range: 1,
@@ -81,6 +83,28 @@ main() {
               "D", 0.4]));
 
     expect(new Color(10, 20, 30).toList(rows: 3), equals([10, 20, 30, 10, 20, 30, 10, 20, 30]));
+
+
+    // === toMap ===
+
+    expect(new Color(10, 20, 30).toMap(), equals({"red": 10, "green": 20, "blue": 30}));
+    expect(new Color(10, 20, 30, 0.0).toMap(), equals({"red": 10, "green": 20, "blue": 30, "alpha": 0.0}));
+
+    // as double
+    expect(new Color(10, 20, 30).toMap(asDouble: true), equals({"red": 10.0, "green": 20.0, "blue": 30.0}));
+    expect(new Color(10, 20, 30, 0.6).toMap(asDouble: true), equals({"red": 10.0, "green": 20.0, "blue": 30.0, "alpha": 0.6}));
+
+    // template
+    expect(new Color(10, 20, 30).toMap(template: {"a": RED, "b": GREEN, "c": BLUE}), equals({"a": 10, "b": 20, "c": 30}));
+    expect(new Color(10, 20, 30).toMap(template: {}), equals({}));
+    expect(new Color(10, 20, 30).toMap(
+          template: {"a": RED, "A": RED, "b": GREEN, "B": GREEN, "c": BLUE, "C": BLUE, "D": ALPHA}),
+        equals({"a": 10, "A":10, "b": 20, "B": 20, "c": 30, "C": 30, "D": 1.0}));
+
+    // range
+    expect(new Color(50, 255, 100, 0.4).toMap(
+        template: {"a": RED, "b": GREEN, "c": BLUE}, range: 1),
+        equals({"a": 0.19607843137254902, "b": 1.0, "c": 0.39215686274509803}));
 
   });
 

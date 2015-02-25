@@ -20,3 +20,4 @@
 
 - Added method toList for the Color object
 - Update docs for constants in presets library
+- Added method toMap for the Color object
