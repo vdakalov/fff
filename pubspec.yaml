@@ -1,5 +1,5 @@
 name: fff
-version: 0.0.2+1
+version: 0.0.3
 author: Viktor Dakalov <atlantidu@gmail.com>
 description: Dart package for convenient work with color
 homepage: https://github.com/vdakalov/fff

@@ -25,9 +25,56 @@ Dart package for convenient work with color.
         // create red color in rgba format
         const red = const Color(255, 0, 0, 1.0);
     }
+
+Output color components as List object
+
+    import 'package:fff/color.dart';
+    import 'package:fff/parser.dart' show RED, GREEN, BLUE, ALPHA;
     
+    main() {
     
+        // create red color
+        var red = const Color(255);
         
+        // output simple list
+        print(red.toList()); // [255, 0, 0]
+        
+        // output by template
+        print(red.toList(template: [ALPHA, BLUE, GREEN, RED]));
+        // [1.0, 0, 0, 255]
+        
+        // value of the alpha channel always output as double and range is
+        // set from 0 to 1 rgb components are always output as int. But
+        // this can be changed by setting the parameter to true asDouble
+        print(red.toList(asDouble: true)); // [255.0, 0.0, 0.0]
+        
+        // change of range of color components
+        print(red.toList(range: 1)); // [1, 0, 0]
+        
+        // You can specify the number of times the output. For example it
+        // may be useful to specify the color of each vertex polygon model
+        print(red.toList(rows: 2, range: 1));
+        // [1.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+    }
+
+Output color components as Map object
+
+    import 'package:fff/color.dart';
+    import 'package:fff/parser.dart' show RED, GREEN, BLUE, ALPHA;
+    
+    main() {
+    
+        var temp = {"A": RED, "B": GREEN, "C": BLUE};
+    
+        // are all exactly the same as in the first case, with the only
+        // exception that here there is no parameter rows and default
+        // template {"red": RED, "green": GREEN, "blue": BLUE, "alpha":
+        // ALPHA}
+        print(new Color(255, 100, 50).toMap(template: temp, range: 1));
+        // {A: 1.0, B: 0.39215686274509803, C: 0.19607843137254902}
+    
+    }
+
 In addition and subtraction of colors, the left is the main color. That is, in the end will be the color of the same size as the left color. For color in rgb format value of alpha is 1.0
     
     print(new Color(100, 0, 0) + new Color(50, 0, 0)); // rgb(150, 0, 0)
