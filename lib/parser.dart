@@ -89,8 +89,7 @@ _parseList(List input) {
 _parseMap(Map input) {
   var convs = new List.from(mapConventions).reversed.toList(),
       conv,
-      result = new List(),
-      num = 4;
+      result = new List();
 
   if (convs.length == 0) {
     throw new Exception("To create an object of Color from data a map type, you need specify one or more map conventions");
