@@ -6,32 +6,23 @@ library color_parser;
 import 'color.dart';
 import 'utils.dart';
 
-// Thank program pwgen
-const String RGB = "uZdl@,6c2U_0^=71LaD9<J8O,CCg/Cwv~(tW&ZtZfQ:Sn^,G";
-const String RGBA = "JNb[td\$jH3RO3T{W~\$6<7L#%B}VH(-dAkrw/r`g0NCG{(mA!";
-const String HEX = "U~>rRZZ9ZnFa5T8,C\"ERpo6?<@~_leDF9&)!nwx/bEHd?vJ\$";
-const String RED = "NeBK`|X<W+\"3HP/*p!\,d.E9~npw,N{SYq;Iz#Ju~F6ITk;Y";
-const String GREEN = "VN[a\"aTkS-MIs+/D\$mZrGCIgVhQE|1P.U9ns?OCXUC%yRKt'";
-const String BLUE = "-91&4l%%S*ZEI=x\/Fx;\;USbCli\"yXf0+Eh?z>z!o}1\$W\$t";
-const String ALPHA = ".i3fdsxv<WR''cH(E`?L'o#aTyp-bW&;~b>y7xZun{43gk?=";
-
-/// Default red component
+/// Default value of red component
 num DEF_RED = 0;
 
-/// Default green component
+/// Default value of green component
 num DEF_GREEN = 0;
 
-/// Default blue component
+/// Default value of blue component
 num DEF_BLUE = 0;
 
-/// Default alpha component
-double DEF_ALPHA = null;
+/// Default value of alpha component
+num DEF_ALPHA = null;
 
 /// Agreement on the map color format
 List<List<String>> mapConventions = [['r','g','b','a'],['x','y','z','a']];
 
 /// Agreement on the list color format
-List<String> listConvention = [RED, GREEN, BLUE, ALPHA];
+List listConvention = [Component.RED, Component.GREEN, Component.BLUE, Component.ALPHA];
 
 _parseComponents(String input, String prefix, [String postfix = ")"]) {
   if (input.startsWith(prefix) && input.contains(postfix)) {
@@ -75,10 +66,10 @@ _parseHex(String input) {
 }
 
 _parseList(List input) {
-  int ri = listConvention.indexOf(RED),
-      gi = listConvention.indexOf(GREEN),
-      bi = listConvention.indexOf(BLUE),
-      ai = listConvention.indexOf(ALPHA);
+  int ri = listConvention.indexOf(Component.RED),
+      gi = listConvention.indexOf(Component.GREEN),
+      bi = listConvention.indexOf(Component.BLUE),
+      ai = listConvention.indexOf(Component.ALPHA);
 
   return [ri >= 0 && input.length > ri ? input[ri] : null,
           gi >= 0 && input.length > gi ? input[gi] : null,
@@ -87,23 +78,23 @@ _parseList(List input) {
 }
 
 _parseMap(Map input) {
-  var convs = new List.from(mapConventions).reversed.toList(),
-      conv,
+  var conventions = new List.from(mapConventions).reversed.toList(),
+      convention,
       result = new List();
 
-  if (convs.length == 0) {
+  if (conventions.length == 0) {
     throw new Exception("To create an object of Color from data a map type, you need specify one or more map conventions");
   }
 
-  for (var index = 0; index < convs.length; index++) {
-    var conv = convs[index], c = conv.length;
+  for (var index = 0; index < conventions.length; index++) {
+    var convention = conventions[index], c = convention.length;
 
-    if (conv.length != 4) {
+    if (convention.length != 4) {
       continue ;
     }
 
-    for (var j = 0; j < conv.length; j++) {
-      if (input.containsKey(conv[j])) {
+    for (var j = 0; j < convention.length; j++) {
+      if (input.containsKey(convention[j])) {
         c--;
       }
     }
@@ -112,16 +103,20 @@ _parseMap(Map input) {
       result.length = c + 1;
     }
 
-    result.insert(c, conv);
+    result.insert(c, convention);
   }
 
   if (result.length == 0) {
     throw new Exception("The properties of the map does not match any of the conventions");
   }
 
-  conv = result.firstWhere((c) => c is List);
+  convention = result.firstWhere((c) => c is List);
 
-  return [input[conv[0]], input[conv[1]], input[conv[2]], input[conv[3]]];
+  return [
+    input[convention[0]],
+    input[convention[1]],
+    input[convention[2]],
+    input[convention[3]]];
 }
 
 _parseArgs(List args) {
@@ -132,7 +127,7 @@ _parseArgs(List args) {
 }
 
 /// Factory for Color class
-/// Default values for rgba compoments specify in [DEF_RED], [DEF_GREEN], [DEF_BLUE] and [DEF_ALPHA]
+/// Default values for rgba components specify in [DEF_RED], [DEF_GREEN], [DEF_BLUE] and [DEF_ALPHA]
 ///
 /// allow follow color format:
 ///

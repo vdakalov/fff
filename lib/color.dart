@@ -3,8 +3,14 @@
 
 library color;
 
-import 'parser.dart' show RED, GREEN, BLUE, ALPHA;
 import 'utils.dart';
+
+enum Component {
+  RED,
+  GREEN,
+  BLUE,
+  ALPHA
+}
 
 class Color {
   /// Return red component (0-255)
@@ -64,7 +70,7 @@ class Color {
   /// Output color in rgb format
   String toRgbString() => "rgb($red, $green, $blue)";
 
-  /// Ouput color in hex format
+  /// Output color in hex format
   String toHexString() => tohex(red) + tohex(green) + tohex(blue);
 
   /// Output color as [List] object
@@ -81,15 +87,15 @@ class Color {
     var values = [red, green, blue, alpha],
         defEnd = 255,
         end = range is int ? range : defEnd,
-        comps = template == null && alpha == null
-            ? [RED, GREEN, BLUE]
-            : [RED, GREEN, BLUE, ALPHA],
-        target =
-            template == null ? new List.from(comps) : new List.from(template);
+        comps = template == null && alpha == null ?
+          [Component.RED, Component.GREEN, Component.BLUE] :
+          [Component.RED, Component.GREEN, Component.BLUE, Component.ALPHA],
+        target = template == null ?
+            new List.from(comps) : new List.from(template);
 
     for (var index = 0; index < comps.length;) {
       var pos = target.indexOf(comps[index]),
-          isAlpha = comps[index] == ALPHA,
+          isAlpha = comps[index] == Component.ALPHA,
           value = values[index];
       if (pos is int && pos >= 0) {
         if (isAlpha) {
@@ -127,18 +133,15 @@ class Color {
   /// argument needs range from 0-range (eg from 0 to 1).
   Map toMap({Map template, bool asDouble: false, int range}) {
     var defKeys = ["red", "green", "blue", "alpha"],
-        comps = template == null && alpha == null
-            ? [RED, GREEN, BLUE]
-            : [RED, GREEN, BLUE, ALPHA],
-        target = template is Map
-            ? template
-            : new Map.fromIterables(defKeys.sublist(0, comps.length), comps);
+        comps = template == null && alpha == null ?
+          [Component.RED, Component.GREEN, Component.BLUE] :
+          [Component.RED, Component.GREEN, Component.BLUE, Component.ALPHA],
+        target = template is Map ? template :
+          new Map.fromIterables(defKeys.sublist(0, comps.length), comps);
 
-    return new Map.fromIterables(
-        target.keys,
-        toList(
-            template: target.values.toList(),
-            asDouble: asDouble,
-            range: range));
+    return new Map.fromIterables(target.keys,
+        toList(template: target.values.toList(),
+               asDouble: asDouble,
+               range: range));
   }
 }

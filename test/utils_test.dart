@@ -3,7 +3,7 @@
 
 library fff.test.utils;
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:fff/utils.dart';
 
 main() {

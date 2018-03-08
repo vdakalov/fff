@@ -3,9 +3,8 @@
 
 library fff.test.color;
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:fff/color.dart';
-import 'package:fff/parser.dart' show RED, GREEN, BLUE, ALPHA;
 
 main() {
 
@@ -45,8 +44,8 @@ main() {
     expect(new Color(10, 20, 30, 0.4).toList(asDouble: true), equals([10.0, 20.0, 30.0, 0.4]));
 
     // template
-    expect(new Color(10, 20, 30, 0.4).toList(
-          template: ["A", RED, "B", GREEN, "C", BLUE, "D", ALPHA]),
+    expect(new Color(10, 20, 30, 0.4).toList(template: [
+      "A", Component.RED, "B", Component.GREEN, "C", Component.BLUE, "D", Component.ALPHA]),
         equals(["A", 10.0, "B", 20.0, "C", 30.0, "D", 0.4]));
 
     expect(new Color(10, 20, 30).toList(
@@ -54,25 +53,25 @@ main() {
         equals(["A", "B", "C"]));
 
     expect(new Color(10, 20, 30).toList(
-          template: [ALPHA, ALPHA, ALPHA]),
+          template: [Component.ALPHA, Component.ALPHA, Component.ALPHA]),
         equals([1.0, 1.0, 1.0]));
 
     expect(new Color(10, 20, 30).toList(
-          template: [BLUE, BLUE, BLUE]),
+          template: [Component.BLUE, Component.BLUE, Component.BLUE]),
         equals([30, 30, 30]));
 
     // range
     expect(new Color(50, 255, 100, 0.4).toList(
         asDouble: false,
         range: 1,
-        template: [RED,
-                   GREEN,
-                   BLUE,
-                   ALPHA,
-                   "A", RED,
-                   "B", GREEN,
-                   "C", BLUE,
-                   "D", ALPHA]),
+        template: [Component.RED,
+                   Component.GREEN,
+                   Component.BLUE,
+                   Component.ALPHA,
+                   "A", Component.RED,
+                   "B", Component.GREEN,
+                   "C", Component.BLUE,
+                   "D", Component.ALPHA]),
       equals([0.19607843137254902,
               1.0,
               0.39215686274509803,
@@ -95,15 +94,15 @@ main() {
     expect(new Color(10, 20, 30, 0.6).toMap(asDouble: true), equals({"red": 10.0, "green": 20.0, "blue": 30.0, "alpha": 0.6}));
 
     // template
-    expect(new Color(10, 20, 30).toMap(template: {"a": RED, "b": GREEN, "c": BLUE}), equals({"a": 10, "b": 20, "c": 30}));
+    expect(new Color(10, 20, 30).toMap(template: {"a": Component.RED, "b": Component.GREEN, "c": Component.BLUE}), equals({"a": 10, "b": 20, "c": 30}));
     expect(new Color(10, 20, 30).toMap(template: {}), equals({}));
     expect(new Color(10, 20, 30).toMap(
-          template: {"a": RED, "A": RED, "b": GREEN, "B": GREEN, "c": BLUE, "C": BLUE, "D": ALPHA}),
+          template: {"a": Component.RED, "A": Component.RED, "b": Component.GREEN, "B": Component.GREEN, "c": Component.BLUE, "C": Component.BLUE, "D": Component.ALPHA}),
         equals({"a": 10, "A":10, "b": 20, "B": 20, "c": 30, "C": 30, "D": 1.0}));
 
     // range
     expect(new Color(50, 255, 100, 0.4).toMap(
-        template: {"a": RED, "b": GREEN, "c": BLUE}, range: 1),
+        template: {"a": Component.RED, "b": Component.GREEN, "c": Component.BLUE}, range: 1),
         equals({"a": 0.19607843137254902, "b": 1.0, "c": 0.39215686274509803}));
 
   });
