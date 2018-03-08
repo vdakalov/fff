@@ -5,12 +5,7 @@ library color;
 
 import 'utils.dart';
 
-enum Component {
-  RED,
-  GREEN,
-  BLUE,
-  ALPHA
-}
+enum Component { RED, GREEN, BLUE, ALPHA }
 
 class Color {
   /// Return red component (0-255)
@@ -87,11 +82,11 @@ class Color {
     var values = [red, green, blue, alpha],
         defEnd = 255,
         end = range is int ? range : defEnd,
-        comps = template == null && alpha == null ?
-          [Component.RED, Component.GREEN, Component.BLUE] :
-          [Component.RED, Component.GREEN, Component.BLUE, Component.ALPHA],
-        target = template == null ?
-            new List.from(comps) : new List.from(template);
+        comps = template == null && alpha == null
+            ? [Component.RED, Component.GREEN, Component.BLUE]
+            : [Component.RED, Component.GREEN, Component.BLUE, Component.ALPHA],
+        target =
+            template == null ? new List.from(comps) : new List.from(template);
 
     for (var index = 0; index < comps.length;) {
       var pos = target.indexOf(comps[index]),
@@ -133,15 +128,18 @@ class Color {
   /// argument needs range from 0-range (eg from 0 to 1).
   Map toMap({Map template, bool asDouble: false, int range}) {
     var defKeys = ["red", "green", "blue", "alpha"],
-        comps = template == null && alpha == null ?
-          [Component.RED, Component.GREEN, Component.BLUE] :
-          [Component.RED, Component.GREEN, Component.BLUE, Component.ALPHA],
-        target = template is Map ? template :
-          new Map.fromIterables(defKeys.sublist(0, comps.length), comps);
+        comps = template == null && alpha == null
+            ? [Component.RED, Component.GREEN, Component.BLUE]
+            : [Component.RED, Component.GREEN, Component.BLUE, Component.ALPHA],
+        target = template is Map
+            ? template
+            : new Map.fromIterables(defKeys.sublist(0, comps.length), comps);
 
-    return new Map.fromIterables(target.keys,
-        toList(template: target.values.toList(),
-               asDouble: asDouble,
-               range: range));
+    return new Map.fromIterables(
+        target.keys,
+        toList(
+            template: target.values.toList(),
+            asDouble: asDouble,
+            range: range));
   }
 }
