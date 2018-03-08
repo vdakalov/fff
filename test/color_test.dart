@@ -28,6 +28,16 @@ main() {
 
     expect(new Color(255, 0, 0).toHexString(), "ff0000");
 
+    expect(new Color(255, 255, 255).toString('red: %r, green: %g, blue: %B'),
+        'red: 255, green: 255, blue: 255');
+
+    expect(
+        new Color(255, 255, 255, .5)
+            .toString('red: %r, green: %g, blue: %B, alpha: %A'),
+        'red: 255, green: 255, blue: 255, alpha: 0.5');
+
+    expect(new Color(255, 255, 255, .5).toHexString('#%R%g%b'), '#FFffff');
+
     // === toList ===
 
     // simple

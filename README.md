@@ -1,6 +1,8 @@
 # fff
 
-Dart package for convenient work with color.
+Dart package for convenient work with color. It will allow you to convert
+colors between rgb, rgba and hex formats. Also it can parse color from
+strings specified formats and from list of color components or map.
 
 ## Usage
 
@@ -32,7 +34,6 @@ Output color components as List object
 
 ```dart
 import 'package:fff/color.dart';
-import 'package:fff/parser.dart' show RED, GREEN, BLUE, ALPHA;
 
 main() {
 
@@ -43,7 +44,14 @@ main() {
     print(red.toList()); // [255, 0, 0]
 
     // output by template
-    print(red.toList(template: [ALPHA, BLUE, GREEN, RED]));
+    print(
+      red.toList(template: [
+        Component.ALPHA,
+        Component.BLUE,
+        Component.GREEN,
+        Component.RED
+      ])
+    );
     // [1.0, 0, 0, 255]
 
     // value of the alpha channel always output as double and range is
@@ -65,11 +73,14 @@ Output color components as Map object
 
 ```dart
 import 'package:fff/color.dart';
-import 'package:fff/parser.dart' show RED, GREEN, BLUE, ALPHA;
 
 main() {
 
-    var temp = {"A": RED, "B": GREEN, "C": BLUE};
+    var temp = {
+      "A": Component.RED,
+      "B": Component.GREEN,
+      "C": Component.BLUE
+    };
 
     // are all exactly the same as in the first case, with the only
     // exception that here there is no parameter rows and default
@@ -144,7 +155,12 @@ main() {
     var brg = [30, 10, 20];
 
     // change list convention
-    listConvention = [Color.BLUE, Color.RED, Color.GREEN, Color.ALPHA];
+    listConvention = [
+      Component.BLUE,
+      Component.RED,
+      Component.GREEN,
+      Component.ALPHA
+    ];
 
     print(ColorParser(brg)); // rgb(10, 20, 30)
 

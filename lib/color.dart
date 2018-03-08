@@ -56,17 +56,32 @@ class Color {
   }
 
   /// Output color as string in rgba(r, g, b, a) or rgb(r, g, b) format
-  String toString() => alpha == null ? toRgbString() : toRgbaString();
+  String toString([template = null]) => alpha == null
+      ? (template == null ? toRgbString() : toRgbString(template))
+      : (template == null ? toRgbaString() : toRgbaString(template));
 
   /// Output color in rgba format
-  String toRgbaString() =>
-      "rgba($red, $green, $blue, ${alpha == null ? 1.0 : alpha})";
+  String toRgbaString([String template = 'rgba(%r, %g, %b, %a)']) => template
+      .replaceAll(new RegExp('%[rR]'), red.toString())
+      .replaceAll(new RegExp('%[gG]'), green.toString())
+      .replaceAll(new RegExp('%[bB]'), blue.toString())
+      .replaceAll(
+          new RegExp('%[aA]'), (alpha == null ? 1.0 : alpha).toString());
 
   /// Output color in rgb format
-  String toRgbString() => "rgb($red, $green, $blue)";
+  String toRgbString([String template = 'rgb(%r, %g, %b)']) => template
+      .replaceAll(new RegExp('%[rR]'), red.toString())
+      .replaceAll(new RegExp('%[gG]'), green.toString())
+      .replaceAll(new RegExp('%[bB]'), blue.toString());
 
   /// Output color in hex format
-  String toHexString() => tohex(red) + tohex(green) + tohex(blue);
+  String toHexString([String template = '%r%g%b']) => template
+      .replaceAll(new RegExp('%r'), tohex(red))
+      .replaceAll(new RegExp('%R'), tohex(red).toUpperCase())
+      .replaceAll(new RegExp('%g'), tohex(green))
+      .replaceAll(new RegExp('%G'), tohex(green).toUpperCase())
+      .replaceAll(new RegExp('%b'), tohex(blue))
+      .replaceAll(new RegExp('%B'), tohex(blue).toUpperCase());
 
   /// Output color as [List] object
   /// By default, the list will be output in rgb or rgba format, depending on

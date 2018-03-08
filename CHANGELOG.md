@@ -27,4 +27,5 @@
 - Change self-enum color components with Dart builtin enums
 - Remove unused enum items (RGB, RGBA, HEX)
 - Move color components from `package:fff/parser.dart` to `package:fff/color.dart`
-- Restore of the tests for work with new Dart test library
+- Restored tests to work with the new Dart library
+- Added the ability to specify a pattern when translating a color into a string
