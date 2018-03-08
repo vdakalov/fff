@@ -1,7 +1,10 @@
 name: fff
 version: 1.0.0
 author: Viktor Dakalov <atlantidu@gmail.com>
-description: Dart package for convenient work with color
+description:
+  Dart package for convenient work with color. It will allow you to convert
+  colors between rgb, rgba and hex formats. Also it can parse color from
+  strings specified formats and from list of color components or map.
 homepage: https://github.com/vdakalov/fff
 dev_dependencies:
   test: "^0.12.32+1"
