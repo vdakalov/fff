@@ -7,36 +7,34 @@ import 'package:test/test.dart';
 import 'package:fff/utils.dart';
 
 main() {
-
-  test("min",(){
+  test("min", () {
     expect(min(10, 20), 10);
     expect(min(-2, -1), -2);
   });
 
-  test("max", (){
+  test("max", () {
     expect(max(100, 0), 100);
     expect(max(-20, -19.9), -19.9);
   });
 
-  test("hexin", (){
+  test("hexin", () {
     expect(hexin("f"), "ff");
     expect(hexin("ff"), "ff");
   });
 
-  test("hexout", (){
+  test("hexout", () {
     expect(hexout("f"), "0f");
     expect(hexout("ff"), "ff");
   });
 
-  test("tohex", (){
+  test("tohex", () {
     expect(tohex(255), "ff");
     expect(tohex(0), "00");
     expect(tohex(240), "f0");
   });
 
-  test("fromhex", (){
+  test("fromhex", () {
     expect(fromhex("ff"), 255);
     expect(fromhex("0"), 0);
   });
-
 }

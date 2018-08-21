@@ -10,13 +10,13 @@ min(num a, num b) => a <= b ? a : b;
 max(num a, num b) => a >= b ? a : b;
 
 /// Correct hex component for input (f -> ff)
-hexin(String comp) => comp.length == 1 ? comp + comp : comp;
+String hexin(String comp) => comp.length == 1 ? comp + comp : comp;
 
 /// Correct hex component for output
-hexout(String comp) => comp.length == 1 ? "0$comp" : comp;
+String hexout(String comp) => comp.length == 1 ? "0$comp" : comp;
 
 /// Convert dec component to hex
-tohex(num comp) => hexout(comp.toInt().toRadixString(16));
+String tohex(num comp) => hexout(comp.toInt().toRadixString(16));
 
 /// Convert hex component to dec
-fromhex(String comp) => int.parse(hexin(comp), radix: 16);
+int fromhex(String comp) => int.parse(hexin(comp), radix: 16);

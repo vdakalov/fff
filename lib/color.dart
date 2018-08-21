@@ -3,11 +3,11 @@
 
 library color;
 
-import 'parser.dart' show RED, GREEN, BLUE, ALPHA;
 import 'utils.dart';
 
-class Color {
+enum Component { RED, GREEN, BLUE, ALPHA }
 
+class Color {
   /// Return red component (0-255)
   final int red;
 
@@ -27,7 +27,9 @@ class Color {
 
   bool operator ==(Object other) {
     if (other is Color) {
-      return red == other.red && green == other.green && blue == other.blue &&
+      return red == other.red &&
+          green == other.green &&
+          blue == other.blue &&
           alpha == other.alpha;
     }
     return false;
@@ -38,7 +40,9 @@ class Color {
         min(red + other.red, 255),
         min(green + other.green, 255),
         min(blue + other.blue, 255),
-        alpha == null ? alpha : min(alpha + (other.alpha == null ? 1.0 : other.alpha), 1.0));
+        alpha == null
+            ? alpha
+            : min(alpha + (other.alpha == null ? 1.0 : other.alpha), 1.0));
   }
 
   Color operator -(Color other) {
@@ -46,20 +50,38 @@ class Color {
         max(red - other.red, 0),
         max(green - other.green, 0),
         max(blue - other.blue, 0),
-        alpha == null ? alpha : max(alpha - (other.alpha == null ? 1.0 : other.alpha), 0.0));
+        alpha == null
+            ? alpha
+            : max(alpha - (other.alpha == null ? 1.0 : other.alpha), 0.0));
   }
 
   /// Output color as string in rgba(r, g, b, a) or rgb(r, g, b) format
-  String toString() => alpha == null ? toRgbString() : toRgbaString();
+  String toString([template = null]) => alpha == null
+      ? (template == null ? toRgbString() : toRgbString(template))
+      : (template == null ? toRgbaString() : toRgbaString(template));
 
   /// Output color in rgba format
-  String toRgbaString() => "rgba($red, $green, $blue, ${alpha == null ? 1.0 : alpha})";
+  String toRgbaString([String template = 'rgba(%r, %g, %b, %a)']) => template
+      .replaceAll(new RegExp('%[rR]'), red.toString())
+      .replaceAll(new RegExp('%[gG]'), green.toString())
+      .replaceAll(new RegExp('%[bB]'), blue.toString())
+      .replaceAll(
+          new RegExp('%[aA]'), (alpha == null ? 1.0 : alpha).toString());
 
   /// Output color in rgb format
-  String toRgbString() => "rgb($red, $green, $blue)";
+  String toRgbString([String template = 'rgb(%r, %g, %b)']) => template
+      .replaceAll(new RegExp('%[rR]'), red.toString())
+      .replaceAll(new RegExp('%[gG]'), green.toString())
+      .replaceAll(new RegExp('%[bB]'), blue.toString());
 
-  /// Ouput color in hex format
-  String toHexString() => tohex(red) + tohex(green) + tohex(blue);
+  /// Output color in hex format
+  String toHexString([String template = '%r%g%b']) => template
+      .replaceAll(new RegExp('%r'), tohex(red))
+      .replaceAll(new RegExp('%R'), tohex(red).toUpperCase())
+      .replaceAll(new RegExp('%g'), tohex(green))
+      .replaceAll(new RegExp('%G'), tohex(green).toUpperCase())
+      .replaceAll(new RegExp('%b'), tohex(blue))
+      .replaceAll(new RegExp('%B'), tohex(blue).toUpperCase());
 
   /// Output color as [List] object
   /// By default, the list will be output in rgb or rgba format, depending on
@@ -71,19 +93,19 @@ class Color {
   /// (eg from 0 to 1). It is also possible to deduce the components several
   /// times, specify the argument [rows]. This may be necessary when you need to
   /// set the same color for each vertex in the polygon 3D model.
-  List toList({
-    List template, bool asDouble: false, int range, int rows: 1}) {
-
+  List toList({List template, bool asDouble: false, int range, int rows: 1}) {
     var values = [red, green, blue, alpha],
         defEnd = 255,
         end = range is int ? range : defEnd,
-        comps = template == null && alpha == null ?
-            [RED, GREEN, BLUE] : [RED, GREEN, BLUE, ALPHA],
-        target = template == null ?
-            new List.from(comps) : new List.from(template);
+        comps = template == null && alpha == null
+            ? [Component.RED, Component.GREEN, Component.BLUE]
+            : [Component.RED, Component.GREEN, Component.BLUE, Component.ALPHA],
+        target =
+            template == null ? new List.from(comps) : new List.from(template);
 
-    for (var index = 0; index < comps.length; ) {
-      var pos = target.indexOf(comps[index]), isAlpha = comps[index] == ALPHA,
+    for (var index = 0; index < comps.length;) {
+      var pos = target.indexOf(comps[index]),
+          isAlpha = comps[index] == Component.ALPHA,
           value = values[index];
       if (pos is int && pos >= 0) {
         if (isAlpha) {
@@ -120,17 +142,19 @@ class Color {
   /// in the range of 0-255, but you can change this by specifying a [range]
   /// argument needs range from 0-range (eg from 0 to 1).
   Map toMap({Map template, bool asDouble: false, int range}) {
-
     var defKeys = ["red", "green", "blue", "alpha"],
-        comps = template == null && alpha == null ? [RED, GREEN, BLUE] :
-          [RED, GREEN, BLUE, ALPHA],
-        target = template is Map ? template :
-          new Map.fromIterables(defKeys.sublist(0, comps.length), comps);
+        comps = template == null && alpha == null
+            ? [Component.RED, Component.GREEN, Component.BLUE]
+            : [Component.RED, Component.GREEN, Component.BLUE, Component.ALPHA],
+        target = template is Map
+            ? template
+            : new Map.fromIterables(defKeys.sublist(0, comps.length), comps);
 
-    return new Map.fromIterables(target.keys,
-        toList(template: target.values.toList(),
-               asDouble: asDouble,
-               range: range));
+    return new Map.fromIterables(
+        target.keys,
+        toList(
+            template: target.values.toList(),
+            asDouble: asDouble,
+            range: range));
   }
-
 }
