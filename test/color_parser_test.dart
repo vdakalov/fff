@@ -3,7 +3,7 @@
 
 library fff.test.color_parser;
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:fff/parser.dart';
 import 'package:fff/color.dart';
 

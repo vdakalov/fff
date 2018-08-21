@@ -3,7 +3,7 @@
 
 library fff.test.color;
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:fff/color.dart';
 import 'package:fff/parser.dart' show RED, GREEN, BLUE, ALPHA;
 

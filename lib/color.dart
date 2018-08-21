@@ -25,9 +25,12 @@ class Color {
   /// For color with specified [alpha] component output format will be rgba.
   const Color([this.red = 0, this.green = 0, this.blue = 0, this.alpha]);
 
-  bool operator ==(Color other) {
-    return red == other.red && green == other.green && blue == other.blue &&
-        alpha == other.alpha;
+  bool operator ==(Object other) {
+    if (other is Color) {
+      return red == other.red && green == other.green && blue == other.blue &&
+          alpha == other.alpha;
+    }
+    return false;
   }
 
   Color operator +(Color other) {
