@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0
+
+- Add null-safety
+
 ## 1.0.1
 
 - Support for dart 2.0.0 SDK
@@ -9,7 +13,7 @@
 - Change self-enum color components with Dart builtin enums
 - Remove unused enum items (RGB, RGBA, HEX)
 - Move color components from `package:fff/parser.dart` to `package:fff/color.dart`
-- Restored tests to work with the new Dart library
+- Restored tests to work with the  Dart library
 - Added the ability to specify a pattern when translating a color into a string
 
 ## 0.0.3

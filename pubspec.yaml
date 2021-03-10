@@ -1,10 +1,10 @@
 name: fff
-version: 1.0.1
+version: 2.0.0
 author: Viktor Dakalov <atlantidu@gmail.com>
 description:
   Dart package for convenient work with color. It will allow you to convert colors between rgb, rgba and hex formats.
 homepage: https://github.com/vdakalov/fff
 environment:
-  sdk: ">=1.24.3 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 dev_dependencies:
-  test: ^1.3.0
+  test: ^1.16.7
