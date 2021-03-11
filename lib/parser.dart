@@ -16,7 +16,7 @@ num DEF_GREEN = 0;
 num DEF_BLUE = 0;
 
 /// Default value of alpha component
-num DEF_ALPHA = null;
+num? DEF_ALPHA = null;
 
 /// Agreement on the map color format
 List<List<String>> mapConventions = [
@@ -34,7 +34,7 @@ List listConvention = [
 
 _parseComponents(String input, String prefix, [String postfix = ")"]) {
   if (input.startsWith(prefix) && input.contains(postfix)) {
-    return new List.from(input
+    return List.from(input
         .substring(prefix.length, input.indexOf(postfix))
         .split(",")
         .map((c) => num.parse(c))
@@ -78,7 +78,7 @@ _parseHex(String input) {
   return [];
 }
 
-_parseList(List input) {
+_parseList(List<num?> input) {
   int ri = listConvention.indexOf(Component.RED),
       gi = listConvention.indexOf(Component.GREEN),
       bi = listConvention.indexOf(Component.BLUE),
@@ -93,12 +93,12 @@ _parseList(List input) {
 }
 
 _parseMap(Map input) {
-  var conventions = new List.from(mapConventions).reversed.toList(),
+  var conventions = List.from(mapConventions).reversed.toList(),
       convention,
-      result = new List();
+      result = [];
 
   if (conventions.length == 0) {
-    throw new Exception(
+    throw Exception(
         "To create an object of Color from data a map type, you need specify one or more map conventions");
   }
 
@@ -123,7 +123,7 @@ _parseMap(Map input) {
   }
 
   if (result.length == 0) {
-    throw new Exception(
+    throw Exception(
         "The properties of the map does not match any of the conventions");
   }
 
@@ -165,7 +165,10 @@ _parseArgs(List args) {
 /// - \#FaFaFa
 ///
 /// return [Color] object
-Color ColorParser([dynamic red, num green, num blue, num alpha]) {
+///
+///
+///  expect(ColorParser([10, null, null, null]).toString(), "rgb(10, 0, 0)");
+Color ColorParser([dynamic? red, num? green, num? blue, num? alpha]) {
   var args;
 
   if (red is String) {
@@ -178,7 +181,7 @@ Color ColorParser([dynamic red, num green, num blue, num alpha]) {
     } else if (red.startsWith("#")) {
       args = _parseHex(red.substring(1));
     }
-  } else if (red is List<num>) {
+  } else if (red is List<num?>) {
     args = _parseList(red);
   } else if (red is Map<dynamic, num>) {
     args = _parseMap(red);
@@ -187,11 +190,11 @@ Color ColorParser([dynamic red, num green, num blue, num alpha]) {
   }
 
   if (args == null) {
-    throw new Exception(
+    throw Exception(
         "Invalid color format. Allowed formats: #FFF, #FFFFFF, rgba(255, 255, 255, 1.0) and rgb(255, 255, 255)");
   }
 
   args = _parseArgs(args);
 
-  return new Color(args[0], args[1], args[2], args[3]);
+  return Color(args[0], args[1], args[2], args[3]);
 }

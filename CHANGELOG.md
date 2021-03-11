@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0
+
+- Add null-safety
+
 ## 1.0.1
 
 - Support for dart 2.0.0 SDK

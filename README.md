@@ -86,7 +86,7 @@ main() {
     // exception that here there is no parameter rows and default
     // template {"red": RED, "green": GREEN, "blue": BLUE, "alpha":
     // ALPHA}
-    print(new Color(255, 100, 50).toMap(template: temp, range: 1));
+    print(Color(255, 100, 50).toMap(template: temp, range: 1));
     // {A: 1.0, B: 0.39215686274509803, C: 0.19607843137254902}
 
 }
@@ -95,17 +95,17 @@ main() {
 In addition and subtraction of colors, the left is the main color. That is, in the end will be the color of the same size as the left color. For color in rgb format value of alpha is 1.0
  
  ```dart
-print(new Color(100, 0, 0) + new Color(50, 0, 0)); // rgb(150, 0, 0)
-print(new Color(100, 0, 0) - new Color(50, 0, 0)); // rgb(50, 0, 0)
+print(Color(100, 0, 0) + Color(50, 0, 0)); // rgb(150, 0, 0)
+print(Color(100, 0, 0) - Color(50, 0, 0)); // rgb(50, 0, 0)
 
-print(new Color(100, 0, 0) + new Color(50, 0, 0, .1)); // rgb(150, 0, 0)
-print(new Color(100, 0, 0) - new Color(50, 0, 0, .1)); // rgb(50, 0, 0)
+print(Color(100, 0, 0) + Color(50, 0, 0, .1)); // rgb(150, 0, 0)
+print(Color(100, 0, 0) - Color(50, 0, 0, .1)); // rgb(50, 0, 0)
 
-print(new Color(100, 0, 0, .5) + new Color(50, 0, 0)); // rgba(150, 0, 0, 1.0)
-print(new Color(100, 0, 0, .5) - new Color(50, 0, 0)); // rgba(50, 0, 0, 0.0)
+print(Color(100, 0, 0, .5) + Color(50, 0, 0)); // rgba(150, 0, 0, 1.0)
+print(Color(100, 0, 0, .5) - Color(50, 0, 0)); // rgba(50, 0, 0, 0.0)
 
-print(new Color(100, 0, 0, .5) + new Color(50, 0, 0, .3)); // rgba(150, 0, 0, 0.8)
-print(new Color(100, 0, 0, .5) - new Color(50, 0, 0, .3)); // rgba(50, 0, 0, 0.2)
+print(Color(100, 0, 0, .5) + Color(50, 0, 0, .3)); // rgba(150, 0, 0, 0.8)
+print(Color(100, 0, 0, .5) - Color(50, 0, 0, .3)); // rgba(50, 0, 0, 0.2)
 ```
 
 ### Color presets

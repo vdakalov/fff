@@ -117,17 +117,16 @@ main() {
   });
 
   test("Arithmetics", () {
-    expect(new Color(255) == ColorParser("#f00"), isTrue);
-    expect(
-        new Color(255, 255, 255) == ColorParser("rgb(255, 255, 255)"), isTrue);
+    expect(Color(255) == ColorParser("#f00"), isTrue);
+    expect(Color(255, 255, 255) == ColorParser("rgb(255, 255, 255)"), isTrue);
 
-    expect(new Color(255, 255, 255) == ColorParser("rgba(255, 255, 255, 1.0)"),
+    expect(Color(255, 255, 255) == ColorParser("rgba(255, 255, 255, 1.0)"),
         isFalse);
-    expect(new Color(255, 255, 255, 1.0) == ColorParser("#FFF"), isFalse);
+    expect(Color(255, 255, 255, 1.0) == ColorParser("#FFF"), isFalse);
   });
 
   test("Restrictions", () {
-    expect(ColorParser(512), new Color(255));
-    expect(ColorParser(-1024), new Color(0));
+    expect(ColorParser(512), Color(255));
+    expect(ColorParser(-1024), Color(0));
   });
 }
