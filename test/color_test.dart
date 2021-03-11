@@ -47,8 +47,7 @@ main() {
     expect(Color(255, 255, 255, 1.0).toList(), equals([255, 255, 255, 1.0]));
 
     // as double
-    expect(
-        Color(10, 20, 30).toList(asDouble: true), equals([10.0, 20.0, 30.0]));
+    expect(Color(10, 20, 30).toList(asDouble: true), equals([10.0, 20.0, 30.0]));
     expect(Color(10, 20, 30, 0.4).toList(asDouble: true),
         equals([10.0, 20.0, 30.0, 0.4]));
 
